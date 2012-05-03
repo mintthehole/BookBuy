@@ -201,6 +201,12 @@ class Enrichedtitle < ActiveRecord::Base
       self.dimensions = finfo[:dimensions]
       self.weight = finfo[:weight]
       self.pub_year = finfo[:pubdate]      
+    else
+      self.web_title = 'Not Found'
+      self.web_author = 'Not Found'
+      self.web_listprice = '0'
+      self.web_category = 'Not Found'
+      self.publisher_name = 'Not Found'
     end
   end
 
