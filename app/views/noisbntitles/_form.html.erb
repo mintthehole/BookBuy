@@ -22,7 +22,7 @@
         </tr>
         <tr>
           <th>Title Id</th>
-          <td><%= @noisbntitle.title_id %></td>
+          <td><%= @noisbntitle.title_id %><%= f.hidden_field :title_id %></td>
           <td><%= @noisbntitle.jbtitle.try(:id) %></td>
         </tr>
         <tr>
