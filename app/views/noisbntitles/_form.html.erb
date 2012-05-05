@@ -47,7 +47,7 @@
         </tr>
         <tr>
           <th>Publisher</th>
-          <td><%= f.select :publisher_id, Publisher.all.collect {|p| [p.name, p.id]}%></td>
+          <td><%= f.select :publisher_id, Publisher.all.collect {|p| [p.name, p.id]}.sort %></td>
           <td><%= @noisbntitle.jbtitle.try(:publisher).try(:name) || "?" %></td>
         </tr>
         <tr>
