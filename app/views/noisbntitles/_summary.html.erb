@@ -1,0 +1,98 @@
+<div class='span-20 last'>
+  <table class='no-zebra'>
+    <tr>
+      <th style='width:15%'></th>
+      <th>AMS</th>
+      <th>Justbooksclc.com</th>
+    </tr>
+    <tr>
+      <th>Title Id</th>
+      <td><%= @noisbntitle.title_id %></td>
+      <td><%= @noisbntitle.jbtitle.try(:id) %></td>
+    </tr>
+    <tr>
+      <th>Title</th>
+      <td><%= @noisbntitle.title %></td>
+      <td><%= @noisbntitle.jbtitle.try(:title) %></td>
+    </tr>
+    <tr>
+      <th>Language</th>
+      <td><%= @noisbntitle.language %></td>
+      <td><%= @noisbntitle.jbtitle.try(:language) %></td>
+    </tr>
+    <tr>
+      <th>Author</th>
+      <td><%= @noisbntitle.author %></td>
+      <td><%= @noisbntitle.jbtitle.try(:author).try(:name) %></td>
+    </tr>
+    <tr>
+      <th>Category</th>
+      <td><%= @noisbntitle.jbcategory.try(:division) %> > <%= @noisbntitle.jbcategory.try(:name) %></td>
+      <td><%= @noisbntitle.jbtitle.try(:category).try(:division) %> > <%= @noisbntitle.jbtitle.try(:category).try(:name) %></td>
+    </tr>
+    <tr>
+      <th>Imprint</th>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>Publisher</th>
+      <td><%= @noisbntitle.try(:publisher).try(:name) || "?" %></td>
+      <td><%= @noisbntitle.jbtitle.try(:publisher).try(:name) || "?" %></td>
+    </tr>
+    <tr>
+      <th>List Price</th>
+      <td><%= @noisbntitle.currency %> <%= @noisbntitle.listprice %></td>
+      <td><%= @noisbntitle.jbtitle.try(:mrp) %></td>
+    </tr>
+    <tr>
+      <th>Pub Year</th>
+      <td><%= @noisbntitle.pub_year %></td>
+      <td><%= @noisbntitle.jbtitle.try(:yearofpublication) %></td>
+    </tr>
+    <tr>
+      <th>Pages</th>
+      <td><%= @noisbntitle.page_cnt %></td>
+      <td><%= @noisbntitle.jbtitle.try(:no_of_pages) %></td>
+    </tr>
+    <tr>
+      <th>Format</th>
+      <td><%= @noisbntitle.format %></td>
+      <td><%= @noisbntitle.jbtitle.try(:format) %></td>
+    </tr>
+    <tr>
+      <th>Title in Indian Script</th>
+      <td><%= @noisbntitle.t_title %></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>Author in Indian Script</th>
+      <td><%= @noisbntitle.t_author %></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>Image?</th>
+      <td><%= !@noisbntitle.cover.nil? %></td>
+      <td><%= @noisbntitle.jbtitle.try(:flag_isbn_image) %></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>Last Changed</th>
+      <td><%= @noisbntitle.updated_at %></td>
+      <td><%= @noisbntitle.jbtitle.try(:insertdate) %></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>User</th>
+      <td></td>
+      <td><%= @noisbntitle.jbtitle.try(:userid) %></td>
+      <td></td>
+    </tr>
+  </table>
+</div>
+
+
+<div class="span-3 last">
+  Our Image: <br/>
+  <%= image_tag @noisbntitle.cover.url, :size => "75X150" %>  
+</div>

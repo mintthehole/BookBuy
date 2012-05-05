@@ -1,0 +1,12 @@
+<div class="span-24 last">
+	<%= form_tag noisbntitles_path, :id => 'searchForm', :method => 'get' do -%>
+			<%= field_set_tag 'TITLE ID' do %>		
+			<span>Enter the Title ID.
+			</span>
+			<br/>
+			<%= label_tag 'Title ID'%>
+			<%= text_field_tag :queryTitleID, params[:queryTitleID] %>
+			<%= submit_tag "Submit", :name => nil %>
+			<% end -%>
+	<% end -%>
+</div>
