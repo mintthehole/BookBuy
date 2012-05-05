@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120326114847) do
+ActiveRecord::Schema.define(:version => 20120505110637) do
 
   create_table "app_116_16_gt", :temporary => true, :id => false, :force => true do |t|
     t.integer "batch_no",                  :precision => 38, :scale => 0
@@ -391,6 +391,7 @@ ActiveRecord::Schema.define(:version => 20120326114847) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "short_name"
   end
 
   create_table "list_stagings", :force => true do |t|

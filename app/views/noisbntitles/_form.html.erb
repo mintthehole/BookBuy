@@ -1,3 +1,7 @@
+<% content_for :javascript_includes do %>
+  <%= javascript_include_tag "transliterate.js" %>
+<% end %>
+
 <div class="span-24 last">
   <div class='span-20'>
     <%= form_for(@noisbntitle, :html => { :multipart => true }) do |f| %>
@@ -32,7 +36,7 @@
         </tr>
         <tr>
           <th>Language</th>
-          <td><%= f.select :language, Language.all.collect {|p| [p.name,p.name] } %></td>
+          <td><%= f.select :language, Language.all.collect {|p| ["#{p.short_name}:#{p.name}",p.name] } %></td>
           <td><%= @noisbntitle.jbtitle.try(:language) %></td>
         </tr>
         <tr>
@@ -71,6 +75,16 @@
           <td><%= @noisbntitle.format %></td>
         </tr>
         <tr>
+          <th>Title In Indian Script</th>
+          <td><%= f.text_field :t_title, :size => 100, :class => :indiscript %></td>
+          <td></td>
+        </tr>
+        <tr>
+          <th>Author In Indian Script</th>
+          <td><%= f.text_field :t_author, :size => 100, :class => :indiscript %></td>
+          <td></td>
+        </tr>
+        <tr>
           <th>Image?</th>
           <td>
             <%= image_tag(@noisbntitle.cover.url, :size => "75x100") %><br/>
@@ -78,17 +92,7 @@
           </td>
           <td>
           </td>
-        </tr>
-        <tr>
-          <th>Title In Indian Script</th>
-          <td><%= f.text_field :t_title, :size => 100 %></td>
-          <td></td>
-        </tr>
-        <tr>
-          <th>Author In Indian Script</th>
-          <td><%= f.text_field :t_author, :size => 100 %></td>
-          <td></td>
-        </tr>
+        </tr>        
         <tr>
           <th>Last Changed</th>
           <td><%= @noisbntitle.updated_at %></td>
