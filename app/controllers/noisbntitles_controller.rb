@@ -1,8 +1,27 @@
 class NoisbntitlesController < ApplicationController
   def index
-    @noisbntitles = Noisbntitle.all
+    unless params[:queryTitleID].blank?
+      @enrichedtitle = Enrichedtitle.find_by_title_id(params[:queryTitleID])
+      if @enrichedtitle.nil?
+        @noisbntitle = Noisbntitle.find_by_title_id(params[:queryTitleID])
+        respond_to do |format|
+          unless @noisbntitle.nil?
+            format.html {render "show"}
+            format.js {render :json => @noisbntitle}
+          else
+            format.html {redirect_to :action => 'new', :queryTitleID => params[:queryTitleID]}
+            format.js {head :not_found}
+          end
+        end
+      else
+        respond_to do |format|
+          format.html {render :enrichedtitle_found}
+          format.js {head :forbidden}
+        end
+      end
+    end
   end
-  
+    
   def create
     @noisbntitle = Noisbntitle.new(params[:noisbntitle])
 
@@ -14,7 +33,11 @@ class NoisbntitlesController < ApplicationController
   end
   
   def new
-    @noisbntitle = Noisbntitle.new_from_title(params[:title_id])
+    if Title.exists?(params[:queryTitleID])
+      @noisbntitle = Noisbntitle.new_from_title(params[:queryTitleID])
+    else
+      render :not_found
+    end
   end  
   
   def show
