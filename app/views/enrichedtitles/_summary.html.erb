@@ -44,7 +44,7 @@
     </tr>
     <tr>
       <th>Imprint</th>
-      <td><%= @enrichedtitle.imprint.try(:name) %></td>
+      <td><%= link_to @enrichedtitle.imprint.id, edit_imprint_path(@enrichedtitle.imprint) unless @enrichedtitle.imprint.nil? %></td>
       <td></td>
       <td></td>
     </tr>
@@ -78,6 +78,16 @@
       <td><%= @enrichedtitle.jbtitle.try(:format) %></td>
       <td><%= @enrichedtitle.format %></td>
     </tr>
+    <tr>
+      <th>Title in Indian Script</th>
+      <td><%= @enrichedtitle.t_title %></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>Author in Indian Script</th>
+      <td><%= @enrichedtitle.t_author %></td>
+      <td></td>
+    </tr>    
     <tr>
       <th>Image?</th>
       <td><%= !@enrichedtitle.cover.nil? %></td>
