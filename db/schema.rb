@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120505110637) do
+ActiveRecord::Schema.define(:version => 20120507070506) do
 
   create_table "app_116_16_gt", :temporary => true, :id => false, :force => true do |t|
     t.integer "batch_no",                  :precision => 38, :scale => 0
@@ -258,6 +258,8 @@ ActiveRecord::Schema.define(:version => 20120505110637) do
     t.string    "web_scanned"
     t.string    "web_category"
     t.string    "review_file_name"
+    t.string    "t_title"
+    t.string    "t_author"
   end
 
   add_index "enrichedtitle_versions", ["enrichedtitle_id"], :name => "i_enr_ver_enr_id"
@@ -303,6 +305,8 @@ ActiveRecord::Schema.define(:version => 20120505110637) do
     t.string    "web_scanned"
     t.string    "web_category"
     t.string    "review_file_name"
+    t.string    "t_title"
+    t.string    "t_author"
   end
 
   add_index "enrichedtitles", ["isbn"], :name => "enrichedtitles_isbn", :unique => true

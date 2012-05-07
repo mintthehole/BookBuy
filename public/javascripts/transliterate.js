@@ -17,8 +17,15 @@ function onLoad() {
     new google.elements.transliteration.TransliterationControl(options);
 
   // Enable transliteration in the textfields with the given ids.
-  var ids = [ "noisbntitle_t_title", "noisbntitle_t_author" ];
-  transliterationControl.makeTransliteratable(ids);
+  try {
+    var ids = [ "noisbntitle_t_title", "noisbntitle_t_author" ];
+    transliterationControl.makeTransliteratable(ids);
+  } catch (e) {}
+  
+  try {
+    var ids = [ "enrichedtitle_t_title", "enrichedtitle_t_author" ];
+    transliterationControl.makeTransliteratable(ids);
+  } catch (e) {}
 
   // Add the STATE_CHANGED event handler to correcly maintain the state
   // of the checkbox.
@@ -52,6 +59,19 @@ $("#noisbntitle_language").live('click',function()
   {
     try {
       var selectedLang = $("#noisbntitle_language option:selected").text().split(':')[0];
+      transliterationControl.enableTransliteration();
+      transliterationControl.setLanguagePair( 
+        google.elements.transliteration.LanguageCode.ENGLISH, selectedLang );        
+    } catch (e) {
+      transliterationControl.disableTransliteration();
+    }
+  }
+);
+
+$("#enrichedtitle_language").live('click',function() 
+  {
+    try {
+      var selectedLang = $("#enrichedtitle_language option:selected").text().split(':')[0];
       transliterationControl.enableTransliteration();
       transliterationControl.setLanguagePair( 
         google.elements.transliteration.LanguageCode.ENGLISH, selectedLang );        

@@ -79,6 +79,16 @@
       <td><%= @enrichedtitle.format %></td>
     </tr>
     <tr>
+      <th>Title in Indian Script</th>
+      <td><%= @enrichedtitle.t_title %></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>Author in Indian Script</th>
+      <td><%= @enrichedtitle.t_author %></td>
+      <td></td>
+    </tr>    
+    <tr>
       <th>Image?</th>
       <td><%= !@enrichedtitle.cover.nil? %></td>
       <td><%= @enrichedtitle.jbtitle.try(:flag_isbn_image) %></td>
