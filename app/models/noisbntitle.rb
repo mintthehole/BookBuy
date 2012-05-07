@@ -28,6 +28,7 @@ class Noisbntitle < ActiveRecord::Base
   validates_attachment_content_type :cover, :content_type => ['image/jpeg']
   
   before_create :upsert_legacy_title
+  before_update :upsert_legacy_title
   
   before_validation :set_defaults_on_create
 
