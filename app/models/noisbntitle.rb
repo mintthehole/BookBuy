@@ -24,7 +24,7 @@ class Noisbntitle < ActiveRecord::Base
   validates :t_title, :presence => true
   validates :t_author, :presence => true
   
-  validates_attachment_size :cover, :less_than => 50.kilobytes, :message => 'file size maximum 50 KB allowed'
+  validates_attachment_size :cover, :less_than => 600.kilobytes, :message => 'file size maximum 600 KB allowed'
   validates_attachment_content_type :cover, :content_type => ['image/jpeg']
   
   before_create :upsert_legacy_title
