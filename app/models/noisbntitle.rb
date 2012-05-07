@@ -8,7 +8,8 @@ class Noisbntitle < ActiveRecord::Base
   
   
   has_attached_file :cover, :styles => {:thumb => "100x100>", :medium => "200x200>"}, 
-  :path => ':style/:id.:extension', :default_url => "/images/missing_:style.jpg"
+  :path => ':style/:title_id.:extension', :default_url => "/images/missing_:style.jpg",
+  :s3_headers => { 'Cache-Control' => 'max-age=315576000', 'Expires' => 10.years.from_now.httpdate }
   
   validates :title, :presence => true
   validates :author, :presence => true
