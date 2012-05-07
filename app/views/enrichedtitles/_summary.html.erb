@@ -44,7 +44,7 @@
     </tr>
     <tr>
       <th>Imprint</th>
-      <td><%= @enrichedtitle.imprint.try(:name) %></td>
+      <td><%= link_to @enrichedtitle.imprint.id, edit_imprint_path(@enrichedtitle.imprint) unless @enrichedtitle.imprint.nil? %></td>
       <td></td>
       <td></td>
     </tr>
