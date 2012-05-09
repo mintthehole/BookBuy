@@ -7,6 +7,7 @@ class OutboundDeliveryItem < ActiveRecord::Base
   
   validate :is_material_code_valid
   validate :is_book_no_valid
+  validate :is_book_already_cataloged, :on => :create
   
   attr_accessible :material_code, :book_no, :outbound_delivery_id
   attr_accessor :title_id, :isbn, :inr_price
@@ -38,7 +39,10 @@ class OutboundDeliveryItem < ActiveRecord::Base
   
   def is_book_no_valid
     errors.add(:book_no, ' should start with B') unless book_no[0] == 'B'
-    errors.add(:book_no, ' should be of a format B followed by integers') if book_no[1..-1].to_i == 0
+    errors.add(:book_no, ' should be of a format B followed by integers') if book_no[1..-1].to_i == 0    
+  end
+  
+  def is_book_already_cataloged
     errors.add(:book_no, ' is already cataloged') if Book.exists?(:book_tag_number => book_no)
   end
   
