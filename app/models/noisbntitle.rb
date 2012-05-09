@@ -32,6 +32,12 @@ class Noisbntitle < ActiveRecord::Base
   before_update :upsert_legacy_title
   
   before_validation :set_defaults_on_create
+  
+  def inr_price
+    return 0 if !Currencyrate.exists?(:code1 => currency, :code2 => 'INR')
+    rate = Currencyrate.find_by_code1_and_code2(currency, 'INR')
+    return (listprice * rate.rate).to_i
+  end  
 
   def self.new_from_title(legacytitleid)
     nt = new

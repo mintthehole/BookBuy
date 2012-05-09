@@ -5,6 +5,11 @@ BookBuy::Application.routes.draw do
   resources :noisbntitles
   resources :titles, :only => :index
   resources :matchingtitles, :only => [:index, :edit, :show, :update]
+  
+  resources :outbound_deliveries, :only => [:index, :create]
+  resources :outbound_deliveries do
+    post 'upload', :on => :collection
+  end
 
   resources :distributions
   resources :currencyrates

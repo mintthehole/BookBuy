@@ -1,0 +1,31 @@
+<div class='span-24'>  
+  <div class='span-24 last'>
+    <%= form_tag upload_outbound_deliveries_path, :multipart => true do |f| -%>
+      <%= field_set_tag 'Upload SAP Outbound Delivery Note' do -%>
+        <%= file_field_tag :file %>
+        <%= submit_tag "Upload", :name => nil %>
+      <% end -%>
+    <% end -%>
+  </div>
+    
+  <hr/>
+
+  <%= will_paginate :prev_label => '<< Previous', :next_label => 'Next >>', :class => 'pagination'%>
+  <table class='no-zebra'>
+    <tr>
+      <th>Delivery No</th>
+      <th>STO No</th>
+      <th>Destination Plant</th>
+      <th>Created At</th>
+    </tr>
+    
+    <% @outbound_deliveries.each do |ob| -%>
+      <tr class='no-zebra'>
+        <td><%= ob.delivery_no %></td>
+        <td><%= ob.sto_no %></td>
+        <td><%= ob.destination_plant %></td>
+        <td><%= ob.created_at.strftime('%d-%b-%Y') %></td>
+      </tr>
+    <% end -%>
+  <table>
+</div>

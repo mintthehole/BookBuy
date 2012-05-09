@@ -93,6 +93,12 @@ class Enrichedtitle < ActiveRecord::Base
     return nil
   end
   
+  def inr_price
+    return 0 if !Currencyrate.exists?(:code1 => currency, :code2 => 'INR')
+    rate = Currencyrate.find_by_code1_and_code2(currency, 'INR')
+    return (listprice * rate.rate).to_i
+  end
+  
   def self.scan
     Enrichedtitle.unscanned.limit(1000).each do |title|
       if title.isbn.nil?

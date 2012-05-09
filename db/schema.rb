@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120507070506) do
+ActiveRecord::Schema.define(:version => 20120509111137) do
 
   create_table "app_116_16_gt", :temporary => true, :id => false, :force => true do |t|
     t.integer "batch_no",                  :precision => 38, :scale => 0
@@ -544,6 +544,27 @@ ActiveRecord::Schema.define(:version => 20120507070506) do
 
   add_index "noisbntitles", ["publisher_id"], :name => "i_noisbntitles_publisher_id"
   add_index "noisbntitles", ["title_id"], :name => "index_noisbntitles_on_title_id", :unique => true
+
+  create_table "outbound_deliveries", :force => true do |t|
+    t.integer   "delivery_no",                    :precision => 38, :scale => 0
+    t.integer   "sto_no",                         :precision => 38, :scale => 0
+    t.string    "destination_plant"
+    t.timestamp "created_at",        :limit => 6
+    t.timestamp "updated_at",        :limit => 6
+  end
+
+  add_index "outbound_deliveries", ["delivery_no", "sto_no", "destination_plant"], :name => "iec7b3f3728e5b7f7074502706add1", :unique => true
+
+  create_table "outbound_delivery_items", :force => true do |t|
+    t.integer   "outbound_delivery_id",              :precision => 38, :scale => 0
+    t.string    "material_code"
+    t.string    "book_no"
+    t.timestamp "created_at",           :limit => 6
+    t.timestamp "updated_at",           :limit => 6
+  end
+
+  add_index "outbound_delivery_items", ["book_no"], :name => "i_out_del_ite_boo_no", :unique => true
+  add_index "outbound_delivery_items", ["material_code"], :name => "i_out_del_ite_mat_cod"
 
   create_table "pos", :force => true do |t|
     t.string    "code",                                                          :null => false

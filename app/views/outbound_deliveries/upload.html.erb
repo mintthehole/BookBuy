@@ -1,0 +1,29 @@
+<div class='span-24 last'>
+  <table class='no-zebra'>
+    <% @rows.each_with_index do |row,i| -%>
+      <tr class='no-zebra'>        
+          <td><%= row[0] %></td>
+          <td><%= row[1] %></td>
+          <td><%= row[2] %></td>
+          <td><%= row[3] %></td>
+          <td><%= encode_string(row[4]) %></td>
+          <td><%= row[5] %></td>
+          <td><%= row[6] %></td>
+          <td>
+            <%= form_tag outbound_deliveries_path, :method => :post, :remote => true do  -%>
+              <%= hidden_field_tag 'outbound_delivery_id', i %>
+              <%= hidden_field_tag 'outbound_delivery[delivery_no]', row[6] %>
+              <%= hidden_field_tag 'outbound_delivery[sto_no]', row[5] %>
+              <%= hidden_field_tag 'outbound_delivery[destination_plant]', row[3] %>
+              <%= hidden_field_tag 'outbound_delivery[outbound_delivery_item[material_code]]', row[1] %>
+              <%= hidden_field_tag 'outbound_delivery[outbound_delivery_item[book_no]]', row[2] %>
+              <%= submit_tag 'Submit', :name => nil %>              
+            <% end -%>
+          </td>
+          <td id = <%=  "new-ob-form-#{i}" %>>
+            <div class="errors"></div>
+          </td>
+      </tr>
+    <% end -%>
+  <table>
+</div>

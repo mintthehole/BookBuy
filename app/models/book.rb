@@ -7,7 +7,7 @@ class Book < ActiveRecord::Base
   belongs_to :title, :foreign_key => :titleid
   belongs_to :originallocation, :foreign_key => :origlocation, :class_name => 'Branch'
   belongs_to :currentlocation, :foreign_key => :location, :class_name => 'Branch'
-  
+
   searchable do
     text :titleid, :stored => true
     integer :times_rented, :stored => true
@@ -82,5 +82,19 @@ class Book < ActiveRecord::Base
     end
     
     search.execute
+  end
+  
+  def copy_book_to_other_schemas
+    copy_book_to_other_schema(BookMumbai.new)
+    copy_book_to_other_schema(BookHyd.new)    
+  end
+  
+  private
+  def copy_book_to_other_schema(b)
+    self.attributes.each do |at|
+      b[at[0]] = at[1]
+    end
+    b.id = self.id
+    b.save!
   end
 end
