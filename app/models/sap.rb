@@ -3,14 +3,18 @@ module SAP
   EXPORT_FORMATS = {
     :LSMW => "LSMW",
     :FG => "FG",
+    :FGMM => "FGMM",    
     :MISFG => "MISFG",
+    :MISFGMM => "MISFGMM",
   }
   
   def self.create_file(klass, filename)
     case filename
       when EXPORT_FORMATS[:LSMW] then csv = lsmw(klass.ready_for_sap.where(:sap_rm => 'N').order(:id).limit(1000))
       when EXPORT_FORMATS[:FG] then csv = fg(klass.ready_for_sap.where(:sap_fg => 'N').order(:id).limit(1000))
+      when EXPORT_FORMATS[:FGMM] then csv = fgmm(klass.ready_for_sap.where(:sap_fg => 'N').order(:id).limit(1000))
       when EXPORT_FORMATS[:MISFG] then csv = fg(klass.ready_for_sap.where(:sap_fg => 'N').where(:sap_rm => 'Y').order(:id).limit(1000))
+      when EXPORT_FORMATS[:MISFGMM] then csv = fgmm(klass.ready_for_sap.where(:sap_fg => 'N').where(:sap_rm => 'Y').order(:id).limit(1000))
       else csv = "INVALID FILE #{filename}"
     end
     csv
@@ -75,6 +79,34 @@ module SAP
                  sanitize_string(t.author).slice(0,40),
                  " ",
                  " "
+          ]
+      end
+    end
+  end
+  
+  def self.fgmm(et_or_nt)
+    CSV.generate(:col_sep => "\t") do |line|
+      line << %w[MATNR WERKS LGORT MAKTX MATKL BISMT EXTWG BRGEW GEWEI GROES NORMT ZEINR ZEIVR AESZN ZEIFO EKGRP MFRPN]
+      
+      et_or_nt.each do |t|
+        
+        line << ["F#{t.sap_matnr}",
+                 "M001",
+                 "S005",
+                 sanitize_string(t.title).slice(0,40),
+                 sap_matkl(t.language, t.category_id),
+                 t.title_id,
+                 t.pub_year,
+                 t.weight_in_grams,
+                 "G",
+                 t.dimensions,
+                 t.language,
+                 sanitize_string(t.sap_zeinr),
+                 " ",
+                 t.page_cnt,
+                 "PB",
+                 sap_ekgrp(t.language, t.category_id),
+                 sanitize_string(t.author).slice(0,40)
           ]
       end
     end
