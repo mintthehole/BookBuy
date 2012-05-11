@@ -12,6 +12,12 @@ class EnrichedtitlesController < ApplicationController
         end
       end
     end
+
+    unless params[:file_id].blank?
+      send_data SAP::create_file(params[:file_id]),
+          :type => 'text/text; charset=iso-8859-1; header=present',
+          :disposition => "attachment; filename=#{params[:file_id]}.txt"
+    end    
   end
   
   def edit

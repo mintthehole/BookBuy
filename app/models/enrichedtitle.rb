@@ -99,6 +99,11 @@ class Enrichedtitle < ActiveRecord::Base
     return (listprice * rate.rate).to_i
   end
   
+  def weight_in_grams
+    return 0 if weight.nil?
+    weight.scan(/\d/).join('')
+  end
+  
   def self.scan
     Enrichedtitle.unscanned.limit(1000).each do |title|
       if title.isbn.nil?

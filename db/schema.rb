@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120509111137) do
+ActiveRecord::Schema.define(:version => 20120511120646) do
 
   create_table "app_116_16_gt", :temporary => true, :id => false, :force => true do |t|
     t.integer "batch_no",                  :precision => 38, :scale => 0
@@ -129,6 +129,14 @@ ActiveRecord::Schema.define(:version => 20120509111137) do
     t.string  "card_id",     :limit => 16
     t.string  "subdomain",   :limit => 50
     t.integer "city_id",     :limit => nil
+  end
+
+  create_table "categories", :id => false, :force => true do |t|
+    t.integer "id",                       :precision => 38, :scale => 0
+    t.string  "name",      :limit => 200
+    t.string  "division",  :limit => 200
+    t.string  "sap_matkl"
+    t.string  "sap_ekgrp"
   end
 
   create_table "corelist", :force => true do |t|
@@ -396,6 +404,8 @@ ActiveRecord::Schema.define(:version => 20120509111137) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "short_name"
+    t.string   "sap_matkl"
+    t.string   "sap_ekgrp"
   end
 
   create_table "list_stagings", :force => true do |t|
@@ -671,6 +681,12 @@ ActiveRecord::Schema.define(:version => 20120509111137) do
     t.string    "name",          :limit => 1020, :null => false
     t.string    "country",       :limit => 1020
     t.string    "publishername"
+  end
+
+  create_table "sap_rm", :id => false, :force => true do |t|
+    t.integer "lot",                 :precision => 38, :scale => 0
+    t.string  "code", :limit => 20
+    t.string  "name", :limit => 300
   end
 
   create_table "supplierdiscounts", :force => true do |t|
