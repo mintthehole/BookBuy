@@ -14,7 +14,7 @@ module SAP
     csv
   end
   
-  private
+#  private
   
   def self.lsmw(ets)
     CSV.generate(:col_sep => "\t") do |line|
@@ -28,7 +28,7 @@ module SAP
                  "S001",
                  "BLR",
                  sanitize_string(et.title).slice(0,40),
-                 "2008",
+                 sap_matkl(et.language, et.category),
                  et.title_id,
                  et.pub_year,
                  et.weight_in_grams,
@@ -39,7 +39,7 @@ module SAP
                  "",
                  et.page_cnt,
                  "PB",
-                 "P03",
+                 sap_ekgrp(et.language, et.category),
                  sanitize_string(et.author).slice(0,40),
                  "",
                  "000",
@@ -60,7 +60,7 @@ module SAP
         
         line << ["R#{et.isbn}",
                  sanitize_string(et.title).slice(0,40),
-                 "2008",
+                 sap_matkl(et.language, et.category),
                  et.title_id,
                  et.pub_year,
                  et.weight_in_grams,
@@ -71,7 +71,7 @@ module SAP
                  "",
                  et.page_cnt,
                  "PB",
-                 "P03",
+                 sap_ekgrp(et.language, et.category),
                  sanitize_string(et.author).slice(0,40),
                  "",
                  ""
@@ -79,6 +79,21 @@ module SAP
       end
     end
   end
+  
+  def self.sap_matkl(language_name, category_id)
+    language = Language.find_by_name(language_name)
+    category = Category.find_by_id(category_id)
+    return language.sap_matkl unless language.try(:sap_matkl).nil?
+    category.try(:sap_matkl)
+  end
+  
+  def self.sap_ekgrp(language_name, category_id)
+    language = Language.find_by_name(language_name)
+    category = Category.find_by_id(category_id)
+    return language.sap_ekgrp unless language.try(:sap_ekgrp).nil?
+    category.try(:sap_ekgrp)
+  end
+  
     
 
   def self.sanitize_string(str)
