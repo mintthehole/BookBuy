@@ -22,7 +22,7 @@ class NoisbntitlesController < ApplicationController
     end
     
     unless params[:file_id].blank?
-      send_data SAP::create_file(Noisbntitle.limit(10), params[:file_id]),
+      send_data SAP::create_file(Noisbntitle, params[:file_id]),
           :type => 'text/text; charset=iso-8859-1; header=present',
           :disposition => "attachment; filename=#{params[:file_id]}.txt"
     end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120511120646) do
+ActiveRecord::Schema.define(:version => 20120511183155) do
 
   create_table "app_116_16_gt", :temporary => true, :id => false, :force => true do |t|
     t.integer "batch_no",                  :precision => 38, :scale => 0
@@ -268,14 +268,16 @@ ActiveRecord::Schema.define(:version => 20120511120646) do
     t.string    "review_file_name"
     t.string    "t_title"
     t.string    "t_author"
+    t.string    "sap_rm",                 :limit => 1
+    t.string    "sap_fg",                 :limit => 1
   end
 
   add_index "enrichedtitle_versions", ["enrichedtitle_id"], :name => "i_enr_ver_enr_id"
 
   create_table "enrichedtitles", :force => true do |t|
     t.integer   "title_id",                               :precision => 38, :scale => 0
-    t.string    "title",                                                                                :null => false
-    t.string    "isbn",                                                                                 :null => false
+    t.string    "title",                                                                                  :null => false
+    t.string    "isbn",                                                                                   :null => false
     t.string    "language"
     t.string    "category"
     t.string    "subcategory"
@@ -286,8 +288,8 @@ ActiveRecord::Schema.define(:version => 20120511120646) do
     t.string    "verified"
     t.string    "author"
     t.string    "isbnvalid"
-    t.decimal   "listprice",                                                                            :null => false
-    t.string    "currency",                                                                             :null => false
+    t.decimal   "listprice",                                                                              :null => false
+    t.string    "currency",                                                                               :null => false
     t.string    "enriched"
     t.integer   "imprint_id",                             :precision => 38, :scale => 0
     t.string    "category1",              :limit => 1020
@@ -315,6 +317,8 @@ ActiveRecord::Schema.define(:version => 20120511120646) do
     t.string    "review_file_name"
     t.string    "t_title"
     t.string    "t_author"
+    t.string    "sap_rm",                 :limit => 1,                                   :default => "N", :null => false
+    t.string    "sap_fg",                 :limit => 1,                                   :default => "N", :null => false
   end
 
   add_index "enrichedtitles", ["isbn"], :name => "enrichedtitles_isbn", :unique => true
@@ -492,64 +496,70 @@ ActiveRecord::Schema.define(:version => 20120511120646) do
   end
 
   create_table "noisbntitle_versions", :force => true do |t|
-    t.integer  "noisbntitle_id",     :precision => 38, :scale => 0
-    t.integer  "version",            :precision => 38, :scale => 0
+    t.integer  "noisbntitle_id",                  :precision => 38, :scale => 0
+    t.integer  "version",                         :precision => 38, :scale => 0
     t.string   "title"
     t.string   "language"
     t.string   "author"
     t.string   "currency"
-    t.integer  "listprice",          :precision => 38, :scale => 0
+    t.integer  "listprice",                       :precision => 38, :scale => 0
     t.string   "verified"
     t.string   "enriched"
     t.string   "category_id"
     t.string   "publisher_name"
-    t.integer  "pub_year",           :precision => 38, :scale => 0
+    t.integer  "pub_year",                        :precision => 38, :scale => 0
     t.string   "cover_remote_url"
     t.string   "cover_file_name"
     t.string   "cover_content_type"
-    t.integer  "cover_file_size",    :precision => 38, :scale => 0
+    t.integer  "cover_file_size",                 :precision => 38, :scale => 0
     t.datetime "cover_updated_at"
     t.string   "format"
-    t.integer  "page_cnt",           :precision => 38, :scale => 0
+    t.integer  "page_cnt",                        :precision => 38, :scale => 0
     t.string   "dimensions"
     t.string   "weight"
-    t.integer  "title_id",           :precision => 38, :scale => 0
-    t.integer  "publisher_id",       :precision => 38, :scale => 0
+    t.integer  "title_id",                        :precision => 38, :scale => 0
+    t.integer  "publisher_id",                    :precision => 38, :scale => 0
     t.string   "t_title"
     t.string   "t_author"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "sap_rm",             :limit => 1
+    t.string   "sap_fg",             :limit => 1
+    t.string   "sap_bom",            :limit => 1
   end
 
   add_index "noisbntitle_versions", ["noisbntitle_id"], :name => "i_noi_ver_noi_id"
 
   create_table "noisbntitles", :force => true do |t|
-    t.string   "title",                                             :null => false
-    t.string   "language",                                          :null => false
-    t.string   "author",                                            :null => false
-    t.string   "currency",                                          :null => false
-    t.integer  "listprice",          :precision => 38, :scale => 0, :null => false
-    t.string   "verified",                                          :null => false
-    t.string   "enriched",                                          :null => false
-    t.string   "category_id",                                       :null => false
-    t.string   "publisher_name",                                    :null => false
-    t.integer  "pub_year",           :precision => 38, :scale => 0, :null => false
+    t.string   "title",                                                                           :null => false
+    t.string   "language",                                                                        :null => false
+    t.string   "author",                                                                          :null => false
+    t.string   "currency",                                                                        :null => false
+    t.integer  "listprice",                       :precision => 38, :scale => 0,                  :null => false
+    t.string   "verified",                                                                        :null => false
+    t.string   "enriched",                                                                        :null => false
+    t.string   "category_id",                                                                     :null => false
+    t.string   "publisher_name",                                                                  :null => false
+    t.integer  "pub_year",                        :precision => 38, :scale => 0,                  :null => false
     t.string   "cover_remote_url"
     t.string   "cover_file_name"
     t.string   "cover_content_type"
-    t.integer  "cover_file_size",    :precision => 38, :scale => 0
+    t.integer  "cover_file_size",                 :precision => 38, :scale => 0
     t.datetime "cover_updated_at"
     t.string   "format"
-    t.integer  "page_cnt",           :precision => 38, :scale => 0
+    t.integer  "page_cnt",                        :precision => 38, :scale => 0
     t.string   "dimensions"
     t.string   "weight"
-    t.integer  "title_id",           :precision => 38, :scale => 0, :null => false
-    t.integer  "publisher_id",       :precision => 38, :scale => 0, :null => false
+    t.integer  "title_id",                        :precision => 38, :scale => 0,                  :null => false
+    t.integer  "publisher_id",                    :precision => 38, :scale => 0,                  :null => false
     t.string   "t_title"
     t.string   "t_author"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "version",            :precision => 38, :scale => 0
+    t.integer  "version",                         :precision => 38, :scale => 0
+    t.string   "sap_rm",             :limit => 1,                                :default => "N", :null => false
+    t.string   "sap_fg",             :limit => 1,                                :default => "N", :null => false
+    t.string   "sap_bom",            :limit => 1,                                :default => "N", :null => false
   end
 
   add_index "noisbntitles", ["publisher_id"], :name => "i_noisbntitles_publisher_id"
@@ -682,6 +692,14 @@ ActiveRecord::Schema.define(:version => 20120511120646) do
     t.string    "country",       :limit => 1020
     t.string    "publishername"
   end
+
+  create_table "sap_materials", :force => true do |t|
+    t.string "matnr"
+    t.string "rg",    :limit => 1
+    t.string "fg",    :limit => 1
+  end
+
+  add_index "sap_materials", ["matnr"], :name => "index_sap_materials_on_matnr", :unique => true
 
   create_table "sap_rm", :id => false, :force => true do |t|
     t.integer "lot",                 :precision => 38, :scale => 0

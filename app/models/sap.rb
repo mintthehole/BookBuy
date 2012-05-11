@@ -5,10 +5,10 @@ module SAP
     :FG => "FG"
   }
   
-  def self.create_file(et_or_nt, filename)
+  def self.create_file(klass, filename)
     case filename
-      when EXPORT_FORMATS[:LSMW] then csv = lsmw(et_or_nt)
-      when EXPORT_FORMATS[:FG] then csv = fg(et_or_nt)
+      when EXPORT_FORMATS[:LSMW] then csv = lsmw(klass.where(:sap_rm => 'N').order(:id).limit(1000))
+      when EXPORT_FORMATS[:FG] then csv = fg(klass.where(:sap_fg => 'N').order(:id).limit(1000))
       else csv = "INVALID FILE #{filename}"
     end
     csv
