@@ -95,7 +95,7 @@ module SAP
     
 
   def self.sanitize_string(str)
-    return "" if str.empty?
+    return "" if str.nil?
     str.gsub(/[\'|\,|\|\t"]/,"")
   end
 end
