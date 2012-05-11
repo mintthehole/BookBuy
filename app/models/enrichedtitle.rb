@@ -110,7 +110,9 @@ class Enrichedtitle < ActiveRecord::Base
   
   def sap_zeinr
     imprint.try(:publisher).try(:name)
-  end  
+  end
+  
+  scope :ready_for_sap, where(:isbnvalid => 'Y')
   
   def self.scan
     Enrichedtitle.unscanned.limit(1000).each do |title|
