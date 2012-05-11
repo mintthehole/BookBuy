@@ -2,13 +2,15 @@ require 'csv'
 module SAP
   EXPORT_FORMATS = {
     :LSMW => "LSMW",
-    :FG => "FG"
+    :FG => "FG",
+    :MISFG => "MISFG",
   }
   
   def self.create_file(klass, filename)
     case filename
       when EXPORT_FORMATS[:LSMW] then csv = lsmw(klass.ready_for_sap.where(:sap_rm => 'N').order(:id).limit(1000))
       when EXPORT_FORMATS[:FG] then csv = fg(klass.ready_for_sap.where(:sap_fg => 'N').order(:id).limit(1000))
+      when EXPORT_FORMATS[:MISFG] then csv = fg(klass.ready_for_sap.where(:sap_fg => 'N').where(:sap_rm => 'Y').order(:id).limit(1000))
       else csv = "INVALID FILE #{filename}"
     end
     csv
