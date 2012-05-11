@@ -5,10 +5,10 @@ module SAP
     :FG => "FG"
   }
   
-  def self.create_file(filename)
+  def self.create_file(et_or_nt, filename)
     case filename
-      when EXPORT_FORMATS[:LSMW] then csv = lsmw(Enrichedtitle.limit(10))
-      when EXPORT_FORMATS[:FG] then csv = fg(Enrichedtitle.limit(10))
+      when EXPORT_FORMATS[:LSMW] then csv = lsmw(et_or_nt)
+      when EXPORT_FORMATS[:FG] then csv = fg(et_or_nt)
       else csv = "INVALID FILE #{filename}"
     end
     csv
@@ -16,63 +16,61 @@ module SAP
   
 #  private
   
-  def self.lsmw(ets)
+  def self.lsmw(et_or_nt)
     CSV.generate(:col_sep => "\t") do |line|
       line << %w[MATNR WERKS LGORT LGNUM MAKTX MATKL BISMT EXTWG BRGEW GEWEI GROES NORMT ZEINR ZEIVR AESZN ZEIFO EKGRP MFRPN MFRNR DISPO BKLAS VERPR PRCTR]
       
-      ets.each do |et|
-        puts et.isbn
+      et_or_nt.each do |t|
         
-        line << ["R#{et.isbn}",
+        line << ["R#{t.sap_matnr}",
                  "M001",
                  "S001",
                  "BLR",
-                 sanitize_string(et.title).slice(0,40),
-                 sap_matkl(et.language, et.category_id),
-                 et.title_id,
-                 et.pub_year,
-                 et.weight_in_grams,
+                 sanitize_string(t.title).slice(0,40),
+                 sap_matkl(t.language, t.category_id),
+                 t.title_id,
+                 t.pub_year,
+                 t.weight_in_grams,
                  "G",
-                 et.dimensions,
-                 et.language,
-                 sanitize_string(et.imprint.try(:publisher).try(:name)),
+                 t.dimensions,
+                 t.language,
+                 sanitize_string(t.sap_zeinr),
                  " ",
-                 et.page_cnt,
+                 t.page_cnt,
                  "PB",
-                 sap_ekgrp(et.language, et.category_id),
-                 sanitize_string(et.author).slice(0,40),
+                 sap_ekgrp(t.language, t.category_id),
+                 sanitize_string(t.author).slice(0,40),
                  " ",
                  "000",
                  "3000",
-                 et.inr_price,
+                 t.inr_price,
                  "SJB"                 
           ]
       end
     end
   end
 
-  def self.fg(ets)
+  def self.fg(et_or_nt)
     CSV.generate(:col_sep => "\t") do |line|
       line << %w[MATNR MAKTX MATKL BISMT EXTWG BRGEW GEWEI GROES NORMT ZEINR ZEIVR AESZN ZEIFO EKGRP MFRPN MFRNR STPRS]
       
-      ets.each do |et|
-        puts et.isbn
+      et_or_nt.each do |t|
         
-        line << ["R#{et.isbn}",
-                 sanitize_string(et.title).slice(0,40),
-                 sap_matkl(et.language, et.category_id),
-                 et.title_id,
-                 et.pub_year,
-                 et.weight_in_grams,
+        line << ["F#{t.sap_matnr}",
+                 sanitize_string(t.title).slice(0,40),
+                 sap_matkl(t.language, t.category_id),
+                 t.title_id,
+                 t.pub_year,
+                 t.weight_in_grams,
                  "G",
-                 et.dimensions,
-                 et.language,
-                 sanitize_string(et.imprint.try(:publisher).try(:name)),
+                 t.dimensions,
+                 t.language,
+                 sanitize_string(t.sap_zeinr),
                  " ",
-                 et.page_cnt,
+                 t.page_cnt,
                  "PB",
-                 sap_ekgrp(et.language, et.category_id),
-                 sanitize_string(et.author).slice(0,40),
+                 sap_ekgrp(t.language, t.category_id),
+                 sanitize_string(t.author).slice(0,40),
                  " ",
                  " "
           ]

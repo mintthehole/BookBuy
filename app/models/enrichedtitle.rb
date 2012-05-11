@@ -104,6 +104,14 @@ class Enrichedtitle < ActiveRecord::Base
     weight.scan(/\d/).join('')
   end
   
+  def sap_matnr
+    isbn
+  end
+  
+  def sap_zeinr
+    imprint.try(:publisher).try(:name)
+  end  
+  
   def self.scan
     Enrichedtitle.unscanned.limit(1000).each do |title|
       if title.isbn.nil?

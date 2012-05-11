@@ -33,10 +33,23 @@ class Noisbntitle < ActiveRecord::Base
   
   before_validation :set_defaults_on_create
   
+  def sap_matnr
+    title_id
+  end
+  
+  def sap_zeinr
+    publisher.try(:name)
+  end
+  
   def inr_price
     return 0 if !Currencyrate.exists?(:code1 => currency, :code2 => 'INR')
     rate = Currencyrate.find_by_code1_and_code2(currency, 'INR')
     return (listprice * rate.rate).to_i
+  end
+
+  def weight_in_grams
+    return 0 if weight.nil?
+    weight.scan(/\d/).join('')
   end  
 
   def self.new_from_title(legacytitleid)
