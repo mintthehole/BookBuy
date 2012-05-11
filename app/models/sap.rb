@@ -36,12 +36,12 @@ module SAP
                  et.dimensions,
                  et.language,
                  sanitize_string(et.imprint.try(:publisher).try(:name)),
-                 "",
+                 " ",
                  et.page_cnt,
                  "PB",
                  sap_ekgrp(et.language, et.category),
                  sanitize_string(et.author).slice(0,40),
-                 "",
+                 " ",
                  "000",
                  "3000",
                  et.inr_price,
@@ -68,13 +68,13 @@ module SAP
                  et.dimensions,
                  et.language,
                  sanitize_string(et.imprint.try(:publisher).try(:name)),
-                 "",
+                 " ",
                  et.page_cnt,
                  "PB",
                  sap_ekgrp(et.language, et.category),
                  sanitize_string(et.author).slice(0,40),
-                 "",
-                 ""
+                 " ",
+                 " "
           ]
       end
     end
