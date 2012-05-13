@@ -1,11 +1,16 @@
 require 'csv'
 module SAP
+
   EXPORT_FORMATS = {
     :LSMW => "LSMW",
     :FG => "FG",
-    :FGMM => "FGMM",    
+    :FGMM => "FGMM",
+    :FGEXT => "FGEXT",
+    :BOM => 'BOM',
+    :MISBOM => 'MISBOM',
     :MISFG => "MISFG",
     :MISFGMM => "MISFGMM",
+    :MISFGEXT => "MISFGMM"
   }
   
   def self.create_file(klass, filename)
@@ -13,8 +18,12 @@ module SAP
       when EXPORT_FORMATS[:LSMW] then csv = lsmw(klass.ready_for_sap.where(:sap_rm => 'N').order(:id).limit(1000))
       when EXPORT_FORMATS[:FG] then csv = fg(klass.ready_for_sap.where(:sap_fg => 'N').order(:id).limit(1000))
       when EXPORT_FORMATS[:FGMM] then csv = fgmm(klass.ready_for_sap.where(:sap_fg => 'N').order(:id).limit(1000))
+      when EXPORT_FORMATS[:FGEXT] then csv = fgext(klass.ready_for_sap.where(:sap_fg => 'N').order(:id).limit(1000))
+      when EXPORT_FORMATS[:BOM] then csv = bom(klass.ready_for_sap.where(:sap_fg => 'N').order(:id).limit(1000))
       when EXPORT_FORMATS[:MISFG] then csv = fg(klass.ready_for_sap.where(:sap_fg => 'N').where(:sap_rm => 'Y').order(:id).limit(1000))
       when EXPORT_FORMATS[:MISFGMM] then csv = fgmm(klass.ready_for_sap.where(:sap_fg => 'N').where(:sap_rm => 'Y').order(:id).limit(1000))
+      when EXPORT_FORMATS[:MISFGEXT] then csv = fgext(klass.ready_for_sap.where(:sap_fg => 'N').where(:sap_rm => 'Y').order(:id).limit(1000))
+      when EXPORT_FORMATS[:MISBOM] then csv = bom(klass.ready_for_sap.where(:sap_fg => 'N').order(:id).limit(1000))
       else csv = "INVALID FILE #{filename}"
     end
     csv
@@ -112,6 +121,68 @@ module SAP
     end
   end
   
+  def self.fgext(et_or_nt)
+    CSV.generate(:col_sep => "\t") do |line|
+      line << %w[MATNR WERKS LGORT MAKTX PRCTR EKGRP STPRS]
+      
+      et_or_nt.each do |t|
+        
+        sap_plants.each do |p|        
+          line << ["F#{t.sap_matnr}",
+                   sap_lgort(p),
+                   "SB04",
+                   sanitize_string(t.title).slice(0,40),
+                   sap_prctr(p),
+                   sap_ekgrp(t.language, t.category_id),
+                   " "
+            ]
+        end
+      end
+    end
+  end
+  
+  def self.bom(et_or_nt)    
+    mms = ["JACBDUMMY", "500000", "500006", "500001"]
+    
+    CSV.generate(:col_sep => "\t") do |line|
+      line << %w[MATNR WERKS STLAN STLAL DATUV BMENG STLST POSNR POSTP IDNRK MENGE SANKA]
+
+      et_or_nt.each do |t|
+
+        line << ["F#{t.sap_matnr}",
+                 "M001",
+                 "1",
+                 "1",
+                 "03.05.2012",
+                 "1",
+                 "1",
+                 "10",
+                 "L",
+                 "R#{t.sap_matnr}",
+                 "1",
+                 "X"
+          ]
+      
+        
+        4.times do |p|        
+          line << [" ",
+                   " ",
+                   " ",
+                   " ",
+                   " ",
+                   " ",
+                   " ",
+                   ((p+2) * 10).to_s,
+                   "L",
+                   mms[p],
+                   "1",
+                   "X"
+            ]
+        end
+      end
+    end    
+  end
+  
   def self.sap_matkl(language_name, category_id)
     language = Language.find_by_name(language_name)
     category = Category.find_by_id(category_id)
@@ -125,11 +196,26 @@ module SAP
     return language.sap_ekgrp unless language.try(:sap_ekgrp).nil?
     category.try(:sap_ekgrp)
   end
+
+  def self.sap_lgort(branch_id)
+    "F#{branch_id.to_s.rjust(3, "0")}"
+  end
   
-    
+  def self.sap_prctr(branch_id)
+    return "SMU" if branch_id == 62
+    "SJB"
+  end    
 
   def self.sanitize_string(str)
     return "" if str.nil?
     str.gsub(/[\'|\,|\|\t"]/,"")
   end
+  
+  def self.sap_plants
+    plants = (1..70).to_a
+    plants << 952
+    plants.delete(28)
+    plants
+  end
+  
 end
