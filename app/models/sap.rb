@@ -1,5 +1,8 @@
 require 'csv'
 module SAP
+  
+  DEFAULT_MATKL = "9000"
+  DEFAULT_EKGRP = "P20" 
 
   EXPORT_FORMATS = {
     :LSMW => "LSMW",
@@ -187,14 +190,16 @@ module SAP
     language = Language.find_by_name(language_name)
     category = Category.find_by_id(category_id)
     return language.sap_matkl unless language.try(:sap_matkl).nil?
-    category.try(:sap_matkl)
+    matkl = category.try(:sap_matkl)
+    matkl ||= DEFAULT_MATKL
   end
   
   def self.sap_ekgrp(language_name, category_id)
     language = Language.find_by_name(language_name)
     category = Category.find_by_id(category_id)
     return language.sap_ekgrp unless language.try(:sap_ekgrp).nil?
-    category.try(:sap_ekgrp)
+    ekgrp = category.try(:sap_ekgrp)
+    ekgrp ||= DEFAULT_EKGRP
   end
 
   def self.sap_lgort(branch_id)
