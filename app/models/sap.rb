@@ -26,7 +26,7 @@ module SAP
       when EXPORT_FORMATS[:MISFG] then csv = fg(klass.ready_for_sap.where(:sap_fg => 'N').where(:sap_rm => 'Y').order(:id).limit(1000))
       when EXPORT_FORMATS[:MISFGMM] then csv = fgmm(klass.ready_for_sap.where(:sap_fg => 'N').where(:sap_rm => 'Y').order(:id).limit(1000))
       when EXPORT_FORMATS[:MISFGEXT] then csv = fgext(klass.ready_for_sap.where(:sap_fg => 'N').where(:sap_rm => 'Y').order(:id).limit(1000))
-      when EXPORT_FORMATS[:MISBOM] then csv = bom(klass.ready_for_sap.where(:sap_fg => 'N').order(:id).limit(1000))
+      when EXPORT_FORMATS[:MISBOM] then csv = bom(klass.ready_for_sap.where(:sap_fg => 'N').where(:sap_rm => 'Y').order(:id).limit(1000))
       else csv = "INVALID FILE #{filename}"
     end
     csv
@@ -145,7 +145,7 @@ module SAP
   end
   
   def self.bom(et_or_nt)    
-    mms = ["JACBDUMMY", "500000", "500006", "500001"]
+    mms = ["RJACDUMMY", "500000", "500006", "500001"]
     
     CSV.generate(:col_sep => "\t") do |line|
       line << %w[MATNR WERKS STLAN STLAL DATUV BMENG STLST POSNR POSTP IDNRK MENGE SANKA]
