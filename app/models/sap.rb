@@ -13,7 +13,7 @@ module SAP
     :MISBOM => 'MISBOM',
     :MISFG => "MISFG",
     :MISFGMM => "MISFGMM",
-    :MISFGEXT => "MISFGMM"
+    :MISFGEXT => "MISFGEXT"
   }
   
   def self.create_file(klass, filename)
