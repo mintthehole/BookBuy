@@ -221,7 +221,8 @@ class Enrichedtitle < ActiveRecord::Base
       self.page_cnt = finfo[:page_cnt]
       self.dimensions = finfo[:dimensions]
       self.weight = finfo[:weight]
-      self.pub_year = finfo[:pubdate]      
+      self.pub_year = finfo[:pubdate]
+      self.web_scanned = 'New'            
     else
       self.web_title = 'Not Found'
       self.web_author = 'Not Found'
@@ -241,9 +242,7 @@ class Enrichedtitle < ActiveRecord::Base
     et.author = et.web_author
     et.listprice = et.web_listprice.scan(/\d/).join('')
     et.author ||= '.'
-    
-    et.web_scanned = 'New'
-    
+        
     return et
   end
   
