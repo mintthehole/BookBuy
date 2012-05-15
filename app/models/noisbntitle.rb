@@ -75,8 +75,10 @@ class Noisbntitle < ActiveRecord::Base
   private
   
   def title_id_present_in_et?
-    if Enrichedtitle.exists?(title_id)
-      errors.add(:title_id, "this title #{title_id} has an ISBN, check enrichedtitles")
+    unless title_id.nil?
+      if Enrichedtitle.exists?(title_id)
+        errors.add(:title_id, "this title #{title_id} has an ISBN, check enrichedtitles")
+      end
     end
   end
   
