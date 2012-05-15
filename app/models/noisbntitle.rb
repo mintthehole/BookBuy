@@ -26,6 +26,7 @@ class Noisbntitle < ActiveRecord::Base
   validates :t_author, :presence => true
 
   validate :secret_key_valid_for_new_title?
+  validate :title_id_present_in_et?
   
   validates_attachment_size :cover, :less_than => 600.kilobytes, :message => 'file size maximum 600 KB allowed'
   validates_attachment_content_type :cover, :content_type => ['image/jpeg']
@@ -72,6 +73,12 @@ class Noisbntitle < ActiveRecord::Base
   end
   
   private
+  
+  def title_id_present_in_et?
+    if Enrichedtitle.exists?(title_id)
+      errors.add(:title_id, 'this title has an ISBN, check enrichedtitles')
+    end
+  end
   
   def secret_key_valid_for_new_title?
     if title_id.nil? and secret_key != 'RainBow11'
