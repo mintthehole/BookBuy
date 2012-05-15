@@ -39,10 +39,14 @@ class NoisbntitlesController < ApplicationController
   end
   
   def new
-    if Title.exists?(params[:queryTitleID])
-      @noisbntitle = Noisbntitle.new_from_title(params[:queryTitleID])
+    unless (params[:queryTitleID].nil?)
+      if Title.exists?(params[:queryTitleID])
+        @noisbntitle = Noisbntitle.new_from_title(params[:queryTitleID])
+      else
+        render :not_found
+      end
     else
-      render :not_found
+      @noisbntitle = Noisbntitle.new
     end
   end  
   

@@ -3,6 +3,15 @@
 <% end %>
 
 <div class="span-24 last">
+  <% if @noisbntitle.title_id.nil? -%>
+    <h4>
+      You are creating a new title. Proceed only if you know this is a title that does not exist in our collection.
+      Do not create a duplicate title, and if you are unsure, do not proceed.
+    </h4>
+  <% end -%>
+</div>
+
+<div class="span-24 last">
   <div class='span-20'>
     <%= form_for(@noisbntitle, :html => { :multipart => true }) do |f| %>
       <% if @noisbntitle.errors.any? %>
@@ -104,8 +113,11 @@
           <td></td>
         </tr>
       </table>
-      
+
       <div class="actions">
+        <% if @noisbntitle.title_id.nil? %>
+          <%= f.label :secret_key %><%= f.password_field :secret_key %>
+        <% end -%>
         <%= f.submit %>
       </div>
     <% end %>      

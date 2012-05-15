@@ -24,6 +24,8 @@ class Noisbntitle < ActiveRecord::Base
   validates :page_cnt, :presence => true, :numericality => true
   validates :t_title, :presence => true
   validates :t_author, :presence => true
+
+  validate :secret_key_valid_for_new_title?
   
   validates_attachment_size :cover, :less_than => 600.kilobytes, :message => 'file size maximum 600 KB allowed'
   validates_attachment_content_type :cover, :content_type => ['image/jpeg']
@@ -32,6 +34,8 @@ class Noisbntitle < ActiveRecord::Base
   before_update :upsert_legacy_title
   
   before_validation :set_defaults_on_create
+  
+  attr_accessor :secret_key
   
   def sap_matnr
     title_id
@@ -68,6 +72,13 @@ class Noisbntitle < ActiveRecord::Base
   end
   
   private
+  
+  def secret_key_valid_for_new_title?
+    if title_id.nil? and secret_key != 'RainBow11'
+      errors.add(:secret_key, 'is not valid - give a valid key for a new title')
+    end
+  end
+  
   def set_defaults_on_create
     self.verified = 'N'
     self.enriched = 'N'
