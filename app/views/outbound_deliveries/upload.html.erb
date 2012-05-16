@@ -1,27 +1,34 @@
+<% content_for :javascript_includes do %>
+  <%= javascript_include_tag "outbound_deliveries.js" %>
+<% end %>
+
 <div class='span-24 last'>
-  <table class='no-zebra'>
+  <%= button_to_function 'Start Process', 'start_outbound_delivery_creation();' %>
+  <%= button_to_function 'Stop Process', 'stop_outbound_delivery_creation();' %>
+  <%= check_box_tag 'process_status', 1, false, :disabled => true %>
+  <table>
     <% @rows.each_with_index do |row,i| -%>
-      <tr class='no-zebra'>        
-          <td><%= row[0] %></td>
-          <td><%= row[1] %></td>
-          <td><%= row[2] %></td>
-          <td><%= row[3] %></td>
-          <td><%= encode_string(row[4]) %></td>
-          <td><%= row[5] %></td>
-          <td><%= row[6] %></td>
+      <tr>        
+          <td><%= row[OutboundDelivery::FILE_COLUMNS[:srl_no]] %></td>
+          <td><%= row[OutboundDelivery::FILE_COLUMNS[:material_code]] %></td>
+          <td><%= row[OutboundDelivery::FILE_COLUMNS[:serial_no]] %></td>
+          <td><%= row[OutboundDelivery::FILE_COLUMNS[:destination_plant]] %></td>
+          <td><%= encode_string(row[OutboundDelivery::FILE_COLUMNS[:destination_plant_name]]) %></td>
+          <td><%= row[OutboundDelivery::FILE_COLUMNS[:sto_no]] %></td>
+          <td><%= row[OutboundDelivery::FILE_COLUMNS[:delivery_no]] %></td>
           <td>
-            <%= form_tag outbound_deliveries_path, :method => :post, :remote => true do  -%>
-              <%= hidden_field_tag 'outbound_delivery_id', i %>
-              <%= hidden_field_tag 'outbound_delivery[delivery_no]', row[6] %>
-              <%= hidden_field_tag 'outbound_delivery[sto_no]', row[5] %>
-              <%= hidden_field_tag 'outbound_delivery[destination_plant]', row[3] %>
-              <%= hidden_field_tag 'outbound_delivery[outbound_delivery_item[material_code]]', row[1] %>
-              <%= hidden_field_tag 'outbound_delivery[outbound_delivery_item[book_no]]', row[2] %>
-              <%= submit_tag 'Submit', :name => nil %>              
+            <% if i > 0 -%>
+              <%= form_tag outbound_deliveries_path, :id => "odf_#{i}", :class => 'odf', :method => :post, :remote => true do  -%>
+                <%= hidden_field_tag 'outbound_delivery_id', i %>
+                <%= hidden_field_tag 'outbound_delivery[delivery_no]', row[6] %>
+                <%= hidden_field_tag 'outbound_delivery[sto_no]', row[5] %>
+                <%= hidden_field_tag 'outbound_delivery[destination_plant]', row[3] %>
+                <%= hidden_field_tag 'outbound_delivery[outbound_delivery_item[material_code]]', row[1] %>
+                <%= hidden_field_tag 'outbound_delivery[outbound_delivery_item[book_no]]', row[2] %>
+                <%= tag(:div, :class => 'errors')%>
+                <%= submit_tag 'Submit', :name => nil, :hidden => true %>
+              <% end -%>
             <% end -%>
-          </td>
-          <td id = <%=  "new-ob-form-#{i}" %>>
-            <div class="errors"></div>
           </td>
       </tr>
     <% end -%>

@@ -1,4 +1,16 @@
 class OutboundDelivery < ActiveRecord::Base
+  
+  FILE_COLUMNS = {
+    :srl_no => 0,
+    :material_code => 1,
+    :serial_no => 2,
+    :destination_plant => 3,
+    :destination_plant_name => 4,
+    :sto_no => 5,
+    :delivery_no => 6,
+    :production_date => 7
+  }
+  
   has_many :outbound_delivery_items
   
   validates :delivery_no, :presence => true
@@ -18,7 +30,9 @@ class OutboundDelivery < ActiveRecord::Base
   
   def self.build_from_params(params)
     obj = find_or_create_by_delivery_no_and_sto_no_and_destination_plant(params[:delivery_no],params[:sto_no], params[:destination_plant])
-    obj.outbound_delivery_items.build(params[:outbound_delivery_item])
+    unless obj.outbound_delivery_items.exists?(:book_no => params[:outbound_delivery_item][:book_no])
+      obj.outbound_delivery_items.build(params[:outbound_delivery_item])
+    end
     obj
   end
   
