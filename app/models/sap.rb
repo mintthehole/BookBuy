@@ -18,11 +18,11 @@ module SAP
   
   def self.create_file(klass, filename)
     case filename
-      when EXPORT_FORMATS[:LSMW] then csv = lsmw(klass.ready_for_sap.where(:sap_rm => 'N').order(:id).limit(1000))
-      when EXPORT_FORMATS[:FG] then csv = fg(klass.ready_for_sap.where(:sap_fg => 'N').order(:id).limit(1000))
-      when EXPORT_FORMATS[:FGMM] then csv = fgmm(klass.ready_for_sap.where(:sap_fg => 'N').order(:id).limit(1000))
-      when EXPORT_FORMATS[:FGEXT] then csv = fgext(klass.ready_for_sap.where(:sap_fg => 'N').order(:id).limit(1000))
-      when EXPORT_FORMATS[:BOM] then csv = bom(klass.ready_for_sap.where(:sap_fg => 'N').order(:id).limit(1000))
+      when EXPORT_FORMATS[:LSMW] then csv = lsmw(klass.ready_for_sap.where(:sap_rm => 'N').where(:language => 'Marathi').order(:id).limit(1000))
+      when EXPORT_FORMATS[:FG] then csv = fg(klass.ready_for_sap.where(:sap_fg => 'N').where(:language => 'Marathi').order(:id).limit(1000))
+      when EXPORT_FORMATS[:FGMM] then csv = fgmm(klass.ready_for_sap.where(:sap_fg => 'N').where(:language => 'Marathi').order(:id).limit(1000))
+      when EXPORT_FORMATS[:FGEXT] then csv = fgext(klass.ready_for_sap.where(:sap_fg => 'N').where(:language => 'Marathi').order(:id).limit(1000))
+      when EXPORT_FORMATS[:BOM] then csv = bom(klass.ready_for_sap.where(:sap_fg => 'N').where(:language => 'Marathi').order(:id).limit(1000))
       when EXPORT_FORMATS[:MISFG] then csv = fg(klass.ready_for_sap.where(:sap_fg => 'N').where(:sap_rm => 'Y').order(:id).limit(1000))
       when EXPORT_FORMATS[:MISFGMM] then csv = fgmm(klass.ready_for_sap.where(:sap_fg => 'N').where(:sap_rm => 'Y').order(:id).limit(1000))
       when EXPORT_FORMATS[:MISFGEXT] then csv = fgext(klass.ready_for_sap.where(:sap_fg => 'N').where(:sap_rm => 'Y').order(:id).limit(1000))
@@ -217,9 +217,10 @@ module SAP
   end
   
   def self.sap_plants
-    plants = (1..70).to_a
+    plants = (68..68).to_a
+#    plants << 68
     plants << 952
-    plants.delete(28)
+#    plants.delete(28)
     plants
   end
   
