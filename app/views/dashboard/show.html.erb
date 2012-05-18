@@ -2,48 +2,33 @@
 	$('#current_branch').html('<%= user_session['current_branch'].name %>');
 <% end -%>
 
-<!--
-<div class='notice'>
-	You are a staff of <b><%= Branch.branch_name_from_subdomain(current_user.subdomain) %>.</b>
-	If this is not correct, call tech support.
-	<br/>
-	You are currently logged into <%= user_session['current_branch'].name %>. 
-	<% if  @associate_branches.length > 1 -%>
-		<hr/>
-		Click on any of the following branches to change your current branch.
-		<br/>
-		<ol>
-			<% @associate_branches.each do |b| -%>
-				<li><%= link_to b.name, dashboard_path(:current_branch => b.id), :confirm => "Are you sure you want to change the branch to #{b.name}?" %></li>
-			<% end -%>
-		</ol>
-	<% end -%>		
+<div class='span-5' >
+  <h4>Core List</h4>
+  <div><%= link_to "Title With ISBN", enrichedtitles_path %></div>
+  <div><%= link_to "Title Without ISBN", noisbntitles_path %></div>  
+  <br/>
+  <div><%= link_to "New Title (Without ISBN)", new_noisbntitle_path %></div>
+  <br/>
 </div>
--->
-
-<div id='left-nav' >
-  <div><%= link_to "Imprints", imprints_path %></div>
-  <div><%= link_to "Suppliers", suppliers_path %></div>
+<div class='span-5'>
+  <h4>SAP</h4>  
+  <div><%= link_to "SAP Dispatch / Outbound Deliveries", outbound_deliveries_path %></div>
+</div>
+<div class='span-5'>
+  <h4>Procurement</h4>
+  <div><%= link_to "Lists", lists_path %></div>
   <div><%= link_to "Invoices", invoices_path %></div>
   <div><%= link_to "Crates", crates_path %></div>
   <div><%= link_to "Batches", batches_path %></div>
   <div><%= link_to "Procurements", procurements_path %></div>
-  <div><%= link_to "IBT Procurements", ibtrs_path %></div>
-  <div><%= link_to "Supplier Discounts", supplierdiscounts_path %></div>
-  <div><%= link_to "Lists", lists_path %></div>
+  <br/>
+  <div><%= link_to "IBT Procurements", ibtrs_path %></div>  
+</div>
+<div class='span-5'>
+  <h4>Master Data</h4>
   <div><%= link_to "Currencies", currencies_path %></div>
   <div><%= link_to "Currency Rates", currencyrates_path %></div>
-  <div><%= link_to "Title With ISBN", enrichedtitles_path %></div>
-  <div><%= link_to "Title Without ISBN", noisbntitles_path %></div>  
-  <div><%= link_to "SAP Dispatch / Outbound Deliveries", outbound_deliveries_path %></div>
-  <br/>
-  <div><%= link_to "New Title (Without ISBN)", new_noisbntitle_path %></div>
+  <div><%= link_to "Supplier Discounts", supplierdiscounts_path %></div>
+  <div><%= link_to "Imprints", imprints_path %></div>
+  <div><%= link_to "Suppliers", suppliers_path %></div>
 </div>
-<div id='center' style="width:90%">
-</div>
-    
-<% if current_user.frontoffice? -%>
-  <div class='alert'>
-	  You logged in with <%= current_user.email %>, instead use the id that was created for you.
-  </div>
-<% end -%>
