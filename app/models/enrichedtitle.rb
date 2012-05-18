@@ -43,7 +43,7 @@ class Enrichedtitle < ActiveRecord::Base
   belongs_to :jbcategory, :foreign_key => 'category_id', :class_name => "Category"
   
   validates :title,       :presence => true
-  validates :isbn,        :presence => true
+  validates :isbn,        :presence => true, :numericality => true, :length => {:is => 13} # dont allow 10 digit isbns
   validates :author,      :presence => true
   validates :listprice,   :presence => true, :numericality => true
   validates :currency,    :presence => true
@@ -222,7 +222,10 @@ class Enrichedtitle < ActiveRecord::Base
       self.dimensions = finfo[:dimensions]
       self.weight = finfo[:weight]
       self.pub_year = finfo[:pubdate]
-      self.web_scanned = 'New'            
+      self.web_scanned = 'New'
+
+      # fields that require a mapping
+      self.language = self.web_language if Language.exists?(:name => self.web_language)
     else
       self.web_title = 'Not Found'
       self.web_author = 'Not Found'
