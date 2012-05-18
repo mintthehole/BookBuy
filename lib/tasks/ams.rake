@@ -43,7 +43,8 @@ namespace :create do
     cur = conn.execute("select isbn from isbnsnotinet minus select isbn from enrichedtitles ")
     while r = cur.fetch()
       begin
-        et = Enrichedtitle.new_from_web(r[0])
+        isbn = Isbnutil::Isbn.parse(r[0], nil, false)        
+        et = Enrichedtitle.new_from_web(isbn.asIsbn13.gsub(/-/,''))
         unless et.web_scanned.nil?
           et.currency = 'INR'
           et.language = 'English' if et.language.nil?
