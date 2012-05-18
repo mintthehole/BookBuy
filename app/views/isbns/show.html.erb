@@ -1,0 +1,24 @@
+<div class='span-24'>
+  <% if @isbn.valid? -%>
+    <table>
+      <tr>
+        <td>13 Digit</td>
+        <td><%= @isbn.decorated_13digit %></td>
+      </tr>
+      <tr>
+        <td>13 Digit</td>
+        <td><%= @isbn.undecorated_13digit %></td>
+      </tr>
+      <tr>
+        <td>10 Digit</td>
+        <td><%= @isbn.decorated_10digit %></td>
+      </tr>
+      <tr>
+        <td>10 Digit</td>
+        <td><%= @isbn.undecorated_10digit %></td>
+      </tr>
+    </table>
+  <% end -%>
+</div>
+
+<%= link_to 'Back', new_isbn_path %>

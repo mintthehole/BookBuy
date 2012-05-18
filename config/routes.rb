@@ -10,6 +10,8 @@ BookBuy::Application.routes.draw do
   resources :outbound_deliveries do
     post 'upload', :on => :collection
   end
+  
+  resources :isbns, :only => [:new, :create, :show]
 
   resources :distributions
   resources :currencyrates
