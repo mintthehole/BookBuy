@@ -48,7 +48,7 @@ class Po < ActiveRecord::Base
   scope :open_pos, where(:status => 'O')
   scope :pos_with_invoices, where("invoices_count > ?",0)
   scope :pos_for_supplier, lambda { |supplier_id|
-      where(:supplier_id => supplier_id)
+      where("supplier_id = ? and created_at >= ? and rownum < 1000", supplier_id, Time.zone.today.advance(:months => -3))
     }
   scope :like, lambda { |q|
       open_pos.
