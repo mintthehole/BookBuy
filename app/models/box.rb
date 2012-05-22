@@ -46,7 +46,7 @@ class Box < ActiveRecord::Base
     
     if boxes
       supplier_id = Po.find_by_code(boxes).supplier_id
-      unassigned_boxes = Box.joins(:po).where("crate_id IS NULL and pos.supplier_id = ?", supplier_id).order('boxes.id')
+      unassigned_boxes = Box.joins(:po).where("crate_id IS NULL and pos.supplier_id = ?", supplier_id).order('boxes.id').readonly(false)
       # Box.unassigned.unassigned_among_pos(Po.pos_for_supplier(Po.find_by_code(boxes).supplier_id).collect {|po| po.code})
       
       #More Intelligence
