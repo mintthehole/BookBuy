@@ -16,23 +16,23 @@ class Isbn
   end
 
   def decorated_13digit
-    Isbnutil::Isbn.parse(isbn_str, nil, true).asIsbn13
+    Isbnutil::Isbn.parse(isbn_str, nil, false).asIsbn13
   end
   
   def undecorated_13digit
-    Isbnutil::Isbn.parse(isbn_str, nil, true).asIsbn13.gsub(/-/,'')
+    Isbnutil::Isbn.parse(isbn_str, nil, false).asIsbn13.gsub(/-/,'')
   end
 
   def decorated_10digit
-    Isbnutil::Isbn.parse(isbn_str, nil, true).asIsbn10
+    Isbnutil::Isbn.parse(isbn_str, nil, false).asIsbn10
   end
   
   def undecorated_10digit
-    Isbnutil::Isbn.parse(isbn_str, nil, true).asIsbn10.gsub(/-/,'')
+    Isbnutil::Isbn.parse(isbn_str, nil, false).asIsbn10.gsub(/-/,'')
   end
   
   def valid?
-    i = Isbnutil::Isbn.parse(isbn_str, nil, true)
+    i = Isbnutil::Isbn.parse(isbn_str, nil, false)
     return false if i.nil?
     i.isValid
   end
