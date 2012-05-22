@@ -16,6 +16,8 @@
 			<%= field_set_tag 'Export' do %>
 			  <%= select_tag :language, options_for_select(Language.all.collect {|p| ["#{p.short_name}:#{p.name}",p.name] }) %>
 			  <br/>
+  		  <%= select_tag :publisher_id, options_for_select(Publisher.all.collect {|p| [p.name, p.id]}.sort) %>
+  		  <br/>			  
 			  <%= select_tag(:file_id, options_for_select(SAP::EXPORT_FORMATS), {:include_blank => true}) %>
   			<%= submit_tag "Submit", :name => nil %>
 			<% end -%>

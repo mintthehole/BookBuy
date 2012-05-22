@@ -113,6 +113,10 @@ class Enrichedtitle < ActiveRecord::Base
   end
   
   scope :ready_for_sap, where(:isbnvalid => 'Y')
+  scope :for_publisher, lambda {|publisher_id|
+    joins(:imprint).
+    where(:imprints => {:publisher_id => publisher_id})
+  }
   
   def self.scan
     Enrichedtitle.unscanned.limit(1000).each do |title|
