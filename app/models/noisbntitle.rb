@@ -47,6 +47,10 @@ class Noisbntitle < ActiveRecord::Base
   end
   
   scope :ready_for_sap, where('1 = 1')
+  scope :for_publisher, lambda {|publisher_id|
+    where(:publisher_id => publisher_id)
+  }
+  
   
   def inr_price
     return 0 if !Currencyrate.exists?(:code1 => currency, :code2 => 'INR')

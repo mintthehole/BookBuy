@@ -7,26 +7,20 @@ module SAP
   EXPORT_FORMATS = {
     :LSMW => "LSMW",
     :FG => "FG",
-    :FGMM => "FGMM",
     :FGEXT => "FGEXT",
-    :BOM => 'BOM',
-    :MISBOM => 'MISBOM',
-    :MISFG => "MISFG",
-    :MISFGMM => "MISFGMM",
-    :MISFGEXT => "MISFGEXT"
+    :BOM => 'BOM'
   }
   
-  def self.create_file(klass, filename)
+  def self.create_file(klass, params)
+    filename = params[:file_id]
+    language = params[:language]
+    publisher_id = params[:publisher_id]
     case filename
-      when EXPORT_FORMATS[:LSMW] then csv = lsmw(klass.ready_for_sap.where(:sap_rm => 'N').where(:language => 'Marathi').order(:id).limit(1000))
-      when EXPORT_FORMATS[:FG] then csv = fg(klass.ready_for_sap.where(:sap_fg => 'N').where(:language => 'Marathi').order(:id).limit(1000))
-      when EXPORT_FORMATS[:FGMM] then csv = fgmm(klass.ready_for_sap.where(:sap_fg => 'N').where(:language => 'Marathi').order(:id).limit(1000))
-      when EXPORT_FORMATS[:FGEXT] then csv = fgext(klass.ready_for_sap.where(:sap_fg => 'N').where(:language => 'Marathi').order(:id).limit(1000))
-      when EXPORT_FORMATS[:BOM] then csv = bom(klass.ready_for_sap.where(:sap_fg => 'N').where(:language => 'Marathi').order(:id).limit(1000))
-      when EXPORT_FORMATS[:MISFG] then csv = fg(klass.ready_for_sap.where(:sap_fg => 'N').where(:sap_rm => 'Y').order(:id).limit(1000))
-      when EXPORT_FORMATS[:MISFGMM] then csv = fgmm(klass.ready_for_sap.where(:sap_fg => 'N').where(:sap_rm => 'Y').order(:id).limit(1000))
-      when EXPORT_FORMATS[:MISFGEXT] then csv = fgext(klass.ready_for_sap.where(:sap_fg => 'N').where(:sap_rm => 'Y').order(:id).limit(1000))
-      when EXPORT_FORMATS[:MISBOM] then csv = bom(klass.ready_for_sap.where(:sap_fg => 'N').where(:sap_rm => 'Y').order(:id).limit(1000))
+      when EXPORT_FORMATS[:LSMW] then csv = lsmw(klass.ready_for_sap.for_publisher(publisher_id).where(:sap_rm => 'N').where(:language => language).limit(1000))
+      when EXPORT_FORMATS[:FG] then csv = fg(klass.ready_for_sap.for_publisher(publisher_id).where(:sap_fg => 'N').where(:language => language).limit(1000))
+      when EXPORT_FORMATS[:FGMM] then csv = fgmm(klass.ready_for_sap.for_publisher(publisher_id).where(:sap_fg => 'N').where(:language => language).limit(1000))
+      when EXPORT_FORMATS[:FGEXT] then csv = fgext(klass.ready_for_sap.for_publisher(publisher_id).where(:sap_fg => 'N').where(:language => language).limit(1000))
+      when EXPORT_FORMATS[:BOM] then csv = bom(klass.ready_for_sap.for_publisher(publisher_id).where(:sap_fg => 'N').where(:language => language).limit(1000))
       else csv = "INVALID FILE #{filename}"
     end
     csv
