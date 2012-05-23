@@ -1,19 +1,19 @@
 var el = $('#odf_'+<%= "#{@form_id}" %>);
 
-<% if @outbound_delivery.errors.any? %>
+<% if @errors.nil? %>
+
+  el.find('.errors').html("<span>Success</span>");
+
+<% else %>
 
   // Create a list of errors
   var errors = $('<ul />');
 
-  <% @outbound_delivery.errors.full_messages.each do |error| %>
+  <% @errors.full_messages.each do |error| %>
     errors.append('<li><%= escape_javascript( error ) %></li>');
   <% end %>
 
   // Display errors on form
   el.find('.errors').html(errors);
-
-<% else %>
-
-  el.find('.errors').html("<span>Success</span>");
   
 <% end %>

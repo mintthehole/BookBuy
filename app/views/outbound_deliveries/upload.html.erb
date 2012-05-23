@@ -7,8 +7,13 @@
   <%= button_to_function 'Stop Process', 'stop_outbound_delivery_creation();' %>
   <%= check_box_tag 'process_status', 1, false, :disabled => true %>
   <table>
+      <tr>
+        <% OutboundDelivery::FILE_COLUMNS.keys.each do |k| -%>
+          <td><%= k %></td>
+        <% end -%>
+      </tr>
     <% @rows.each_with_index do |row,i| -%>
-      <tr>        
+      <tr>
           <td><%= row[OutboundDelivery::FILE_COLUMNS[:srl_no]] %></td>
           <td><%= row[OutboundDelivery::FILE_COLUMNS[:material_code]] %></td>
           <td><%= row[OutboundDelivery::FILE_COLUMNS[:serial_no]] %></td>
@@ -20,11 +25,11 @@
             <% if i > 0 -%>
               <%= form_tag outbound_deliveries_path, :id => "odf_#{i}", :class => 'odf', :method => :post, :remote => true do  -%>
                 <%= hidden_field_tag 'outbound_delivery_id', i %>
-                <%= hidden_field_tag 'outbound_delivery[delivery_no]', row[6] %>
-                <%= hidden_field_tag 'outbound_delivery[sto_no]', row[5] %>
-                <%= hidden_field_tag 'outbound_delivery[destination_plant]', row[3] %>
-                <%= hidden_field_tag 'outbound_delivery[outbound_delivery_item[material_code]]', row[1] %>
-                <%= hidden_field_tag 'outbound_delivery[outbound_delivery_item[book_no]]', row[2] %>
+                <%= hidden_field_tag 'delivery_no', row[OutboundDelivery::FILE_COLUMNS[:delivery_no]] %>
+                <%= hidden_field_tag 'sto_no', row[OutboundDelivery::FILE_COLUMNS[:sto_no]] %>
+                <%= hidden_field_tag 'destination_plant', row[OutboundDelivery::FILE_COLUMNS[:destination_plant]] %>
+                <%= hidden_field_tag 'material_code', row[OutboundDelivery::FILE_COLUMNS[:material_code]] %>
+                <%= hidden_field_tag 'book_no', row[OutboundDelivery::FILE_COLUMNS[:serial_no]] %>
                 <%= tag(:div, :class => 'errors')%>
                 <%= submit_tag 'Submit', :name => nil, :hidden => true %>
               <% end -%>
