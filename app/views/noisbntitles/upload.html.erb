@@ -1,0 +1,30 @@
+<% content_for :javascript_includes do %>
+  <%= javascript_include_tag "noisbntitles.js" %>
+<% end %>
+
+<div class='span-24 last'>
+  <%= button_to_function 'Start Process', 'start_upload();' %>
+  <%= button_to_function 'Stop Process', 'stop_upload();' %>
+  <%= check_box_tag 'process_status', 1, false, :disabled => true %>
+  <table>
+    <% @rows.each_with_index do |row,i| -%>
+      <tr>        
+          <td><%= row[Noisbntitle::FILE_COLUMNS[:title_id]] %></td>
+          <td><%= row[Noisbntitle::FILE_COLUMNS[:sap_rm]] %></td>
+          <td><%= row[Noisbntitle::FILE_COLUMNS[:sap_fg]] %></td>
+          <td>
+            <% if i > 0 -%>
+              <%= form_tag update_with_title_id_noisbntitles_path, :id => "nt_#{i}", :class => 'nt', :method => :post, :remote => true do  -%>
+                <%= hidden_field_tag 'nt_id', i %>              
+                <%= hidden_field_tag 'nt[title_id]', row[Noisbntitle::FILE_COLUMNS[:title_id]] %>
+                <%= hidden_field_tag 'nt[sap_rm]', row[Noisbntitle::FILE_COLUMNS[:sap_rm]] %>
+                <%= hidden_field_tag 'nt[sap_fg]', row[Noisbntitle::FILE_COLUMNS[:sap_fg]] %>
+                <%= tag(:div, :class => 'errors')%>
+                <%= submit_tag 'Submit', :name => nil, :hidden => true %>
+              <% end -%>
+            <% end -%>
+          </td>
+      </tr>
+    <% end -%>
+  <table>
+</div>

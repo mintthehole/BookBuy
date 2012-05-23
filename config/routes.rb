@@ -2,7 +2,15 @@ BookBuy::Application.routes.draw do
   
   resources :batches
   resources :enrichedtitles, :only => [:index, :edit, :show, :update, :create, :new]
+  resources :enrichedtitles do
+    post 'upload', :on => :collection
+    post 'update_with_isbn', :on => :collection
+  end
   resources :noisbntitles
+  resources :noisbntitles do
+    post 'upload', :on => :collection
+    post 'update_with_title_id', :on => :collection
+  end
   resources :titles, :only => :index
   resources :matchingtitles, :only => [:index, :edit, :show, :update]
   

@@ -1,0 +1,30 @@
+<% content_for :javascript_includes do %>
+  <%= javascript_include_tag "enrichedtitles.js" %>
+<% end %>
+
+<div class='span-24 last'>
+  <%= button_to_function 'Start Process', 'start_upload();' %>
+  <%= button_to_function 'Stop Process', 'stop_upload();' %>
+  <%= check_box_tag 'process_status', 1, false, :disabled => true %>
+  <table>
+    <% @rows.each_with_index do |row,i| -%>
+      <tr>        
+          <td><%= row[Enrichedtitle::FILE_COLUMNS[:isbn]] %></td>
+          <td><%= row[Enrichedtitle::FILE_COLUMNS[:sap_rm]] %></td>
+          <td><%= row[Enrichedtitle::FILE_COLUMNS[:sap_fg]] %></td>
+          <td>
+            <% if i > 0 -%>
+              <%= form_tag update_with_isbn_enrichedtitles_path, :id => "et_#{i}", :class => 'et', :method => :post, :remote => true do  -%>
+                <%= hidden_field_tag 'et_id', i %>              
+                <%= hidden_field_tag 'et[isbn]', row[Enrichedtitle::FILE_COLUMNS[:isbn]] %>
+                <%= hidden_field_tag 'et[sap_rm]', row[Enrichedtitle::FILE_COLUMNS[:sap_rm]] %>
+                <%= hidden_field_tag 'et[sap_fg]', row[Enrichedtitle::FILE_COLUMNS[:sap_fg]] %>
+                <%= tag(:div, :class => 'errors')%>
+                <%= submit_tag 'Submit', :name => nil, :hidden => true %>
+              <% end -%>
+            <% end -%>
+          </td>
+      </tr>
+    <% end -%>
+  <table>
+</div>

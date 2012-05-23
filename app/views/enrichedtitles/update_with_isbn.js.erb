@@ -1,0 +1,27 @@
+var el = $('#et_'+<%= "#{@form_id}" %>);
+
+<% if @et.nil? %>
+
+  el.find('.errors').html("<span>Not Found</span>");
+
+<% else %>
+
+  <% if @et.errors.any? %>
+
+    // Create a list of errors
+    var errors = $('<ul />');
+
+    <% @et.errors.full_messages.each do |error| %>
+      errors.append('<li><%= escape_javascript( error ) %></li>');
+    <% end %>
+
+    // Display errors on form
+    el.find('.errors').html(errors);
+
+  <% else %>
+
+    el.find('.errors').html("<span>Success</span>");
+  
+  <% end %>
+
+<% end %>

@@ -23,3 +23,12 @@
 			<% end -%>
 	<% end -%>  
 </div>
+
+<div class='span-24 last'>
+  <%= form_tag upload_noisbntitles_path, :multipart => true do |f| -%>
+    <%= field_set_tag 'Import' do -%>
+      <%= file_field_tag :file %>
+      <%= submit_tag "Upload", :name => nil %>
+    <% end -%>
+  <% end -%>
+</div>

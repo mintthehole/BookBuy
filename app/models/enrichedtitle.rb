@@ -31,6 +31,12 @@ require 'isbnutil/isbn.rb'
 class Enrichedtitle < ActiveRecord::Base
   acts_as_versioned
   
+  FILE_COLUMNS = {
+    :isbn => 0,
+    :sap_rm => 1,
+    :sap_fg => 2
+  }  
+  
   belongs_to :imprint
   belongs_to :jbtitle, :foreign_key => "title_id", :class_name => "Title"
   has_many :procurementitems

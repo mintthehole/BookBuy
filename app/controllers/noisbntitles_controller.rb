@@ -67,5 +67,23 @@ class NoisbntitlesController < ApplicationController
     else
       render :action => "edit"
     end
+  end 
+ 
+  def upload
+    if request.post? && params[:file].present?
+      infile = params[:file].read
+      n, errs = 0, []
+      
+      @rows = CSV.parse(infile)
+    end
+  end
+  
+  def update_with_title_id
+    @form_id = params[:nt_id]
+    @nt = Noisbntitle.find_by_title_id(params[:nt][:title_id])
+    @nt.update_attributes(params[:nt]) unless @nt.nil?
+    respond_to do |format|
+      format.js {render :layout => false}
+    end      
   end  
 end

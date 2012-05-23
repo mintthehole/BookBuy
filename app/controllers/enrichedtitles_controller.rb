@@ -64,4 +64,22 @@ class EnrichedtitlesController < ApplicationController
     flash[:notice] = "Scanned Web"
     render :action => :edit
   end
+  
+  def upload
+    if request.post? && params[:file].present?
+      infile = params[:file].read
+      n, errs = 0, []
+      
+      @rows = CSV.parse(infile)
+    end
+  end
+  
+  def update_with_isbn
+    @form_id = params[:et_id]
+    @et = Enrichedtitle.find_by_isbn(params[:et][:isbn])
+    @et.update_attributes(params[:et]) unless @et.nil?
+    respond_to do |format|
+      format.js {render :layout => false}
+    end      
+  end  
 end
