@@ -16,11 +16,14 @@
       <tr>
           <td><%= row[OutboundDelivery::FILE_COLUMNS[:srl_no]] %></td>
           <td><%= row[OutboundDelivery::FILE_COLUMNS[:material_code]] %></td>
+          <td><%= row[OutboundDelivery::FILE_COLUMNS[:material_desc]] %></td>
           <td><%= row[OutboundDelivery::FILE_COLUMNS[:serial_no]] %></td>
           <td><%= row[OutboundDelivery::FILE_COLUMNS[:destination_plant]] %></td>
           <td><%= encode_string(row[OutboundDelivery::FILE_COLUMNS[:destination_plant_name]]) %></td>
           <td><%= row[OutboundDelivery::FILE_COLUMNS[:sto_no]] %></td>
           <td><%= row[OutboundDelivery::FILE_COLUMNS[:delivery_no]] %></td>
+          <td><%= row[OutboundDelivery::FILE_COLUMNS[:production_date]] %></td>
+          <td><%= row[OutboundDelivery::FILE_COLUMNS[:storage_bin]] %></td>                    
           <td>
             <% if i > 0 -%>
               <%= form_tag outbound_deliveries_path, :id => "odf_#{i}", :class => 'odf', :method => :post, :remote => true do  -%>
