@@ -12,6 +12,7 @@ class OutboundDeliveriesController < ApplicationController
       n, errs = 0, []
       
       @rows = CSV.parse(infile)
+      @rows.shift
     end
   end
   

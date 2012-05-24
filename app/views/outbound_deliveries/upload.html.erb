@@ -9,33 +9,30 @@
   <table>
       <tr>
         <% OutboundDelivery::FILE_COLUMNS.keys.each do |k| -%>
-          <td><%= k %></td>
+          <th><%= k %></th>
         <% end -%>
       </tr>
     <% @rows.each_with_index do |row,i| -%>
       <tr>
-          <td><%= row[OutboundDelivery::FILE_COLUMNS[:srl_no]] %></td>
-          <td><%= row[OutboundDelivery::FILE_COLUMNS[:material_code]] %></td>
-          <td><%= row[OutboundDelivery::FILE_COLUMNS[:material_desc]] %></td>
-          <td><%= row[OutboundDelivery::FILE_COLUMNS[:serial_no]] %></td>
-          <td><%= row[OutboundDelivery::FILE_COLUMNS[:destination_plant]] %></td>
-          <td><%= encode_string(row[OutboundDelivery::FILE_COLUMNS[:destination_plant_name]]) %></td>
-          <td><%= row[OutboundDelivery::FILE_COLUMNS[:sto_no]] %></td>
-          <td><%= row[OutboundDelivery::FILE_COLUMNS[:delivery_no]] %></td>
-          <td><%= row[OutboundDelivery::FILE_COLUMNS[:production_date]] %></td>
-          <td><%= row[OutboundDelivery::FILE_COLUMNS[:storage_bin]] %></td>                    
+          <td><%= row[OutboundDelivery::FILE_COLUMNS[:srl]] %></td>
+          <td><%= row[OutboundDelivery::FILE_COLUMNS[:material]] %></td>
+          <td><%= row[OutboundDelivery::FILE_COLUMNS[:serial]] %></td>
+          <td><%= row[OutboundDelivery::FILE_COLUMNS[:plant]] %></td>
+          <td><%= encode_string(row[OutboundDelivery::FILE_COLUMNS[:plant_name]]) %></td>
+          <td><%= row[OutboundDelivery::FILE_COLUMNS[:sto]] %></td>
+          <td><%= row[OutboundDelivery::FILE_COLUMNS[:delivery]] %></td>
+          <td><%= row[OutboundDelivery::FILE_COLUMNS[:date]] %></td>
+          <td><%= row[OutboundDelivery::FILE_COLUMNS[:bin]] %></td>                    
           <td>
-            <% if i > 0 -%>
-              <%= form_tag outbound_deliveries_path, :id => "odf_#{i}", :class => 'odf', :method => :post, :remote => true do  -%>
-                <%= hidden_field_tag 'outbound_delivery_id', i %>
-                <%= hidden_field_tag 'delivery_no', row[OutboundDelivery::FILE_COLUMNS[:delivery_no]] %>
-                <%= hidden_field_tag 'sto_no', row[OutboundDelivery::FILE_COLUMNS[:sto_no]] %>
-                <%= hidden_field_tag 'destination_plant', row[OutboundDelivery::FILE_COLUMNS[:destination_plant]] %>
-                <%= hidden_field_tag 'material_code', row[OutboundDelivery::FILE_COLUMNS[:material_code]] %>
-                <%= hidden_field_tag 'book_no', row[OutboundDelivery::FILE_COLUMNS[:serial_no]] %>
-                <%= tag(:div, :class => 'errors')%>
-                <%= submit_tag 'Submit', :name => nil, :hidden => true %>
-              <% end -%>
+            <%= form_tag outbound_deliveries_path, :id => "odf_#{i}", :class => 'odf', :method => :post, :remote => true do  -%>
+              <%= hidden_field_tag 'outbound_delivery_id', i %>
+              <%= hidden_field_tag 'delivery_no', row[OutboundDelivery::FILE_COLUMNS[:delivery]] %>
+              <%= hidden_field_tag 'sto_no', row[OutboundDelivery::FILE_COLUMNS[:sto]] %>
+              <%= hidden_field_tag 'destination_plant', row[OutboundDelivery::FILE_COLUMNS[:plant]] %>
+              <%= hidden_field_tag 'material_code', row[OutboundDelivery::FILE_COLUMNS[:material]] %>
+              <%= hidden_field_tag 'book_no', row[OutboundDelivery::FILE_COLUMNS[:serial]] %>
+              <%= tag(:div, :class => 'errors')%>
+              <%= submit_tag 'Submit', :name => nil, :hidden => true %>
             <% end -%>
           </td>
       </tr>

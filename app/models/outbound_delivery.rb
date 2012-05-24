@@ -1,16 +1,15 @@
 class OutboundDelivery < ActiveRecord::Base
   
   FILE_COLUMNS = {
-    :srl_no => 0,
-    :material_code => 1,
-    :material_desc => 2,
-    :serial_no => 3,
-    :destination_plant => 4,
-    :destination_plant_name => 5,
-    :sto_no => 6,
-    :delivery_no => 7,
-    :production_date => 8,
-    :storage_bin => 9
+    :srl => 0,
+    :material => 1,
+    :serial => 2,
+    :plant => 3,
+    :plant_name => 4,
+    :sto => 5,
+    :delivery => 6,
+    :date => 7,
+    :bin => 8
   }
   
   has_many :outbound_delivery_items

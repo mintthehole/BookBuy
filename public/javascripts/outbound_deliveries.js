@@ -1,6 +1,6 @@
 function start_outbound_delivery_creation() {
   $('#process_status').attr('checked', true);
-  $('#odf_1').submit();
+  $('#odf_0').submit();
 }
 
 function stop_outbound_delivery_creation() {
