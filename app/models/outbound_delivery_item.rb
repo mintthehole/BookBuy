@@ -43,7 +43,7 @@ class OutboundDeliveryItem < ActiveRecord::Base
   end
   
   def is_book_already_cataloged
-    errors.add(:book_no, ' is already cataloged') if Book.exists?(:book_tag_number => book_no)
+    errors.add(:book_no, ' is already cataloged') if Book.exists?(:booknumber => book_no[1..-1])
   end
   
   def create_book_in_catalog
