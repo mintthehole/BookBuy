@@ -1,0 +1,11 @@
+<enrichedtitle>
+  <% unless @enrichedtitle.nil? %>
+		<id><%= @enrichedtitle.id %></id>
+		<isbn><%= @enrichedtitle.isbn %></isbn>
+		<title_id><%= @enrichedtitle.title_id %></title_id>
+		<title><%= @enrichedtitle.title %></title>
+		<author><%= @enrichedtitle.author %></author>
+		<category><%= @enrichedtitle.category.try(:name) %></category>
+		<image_url><%= @enrichedtitle.cover.url %></image_url>
+  <% end %>
+</enrichedtitle>

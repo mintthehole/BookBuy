@@ -43,6 +43,15 @@ class EnrichedtitlesController < ApplicationController
     @enrichedtitle = Enrichedtitle.find(params[:id])
   end
   
+  def isbn
+    @enrichedtitle = Enrichedtitle.find_by_isbn(params[:isbn])
+    if @enrichedtitle.nil?
+      render :not_found
+    else
+      render :show
+    end
+  end
+  
   def update
     @enrichedtitle = Enrichedtitle.find(params[:id])
 

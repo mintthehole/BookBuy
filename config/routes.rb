@@ -1,6 +1,9 @@
 BookBuy::Application.routes.draw do
   
   resources :batches
+  
+  get 'enrichedtitles/isbn/:isbn' => 'enrichedtitles#show_with_isbn'  
+
   resources :enrichedtitles, :only => [:index, :edit, :show, :update, :create, :new]
   resources :enrichedtitles do
     post 'upload', :on => :collection
@@ -11,6 +14,7 @@ BookBuy::Application.routes.draw do
     post 'upload', :on => :collection
     post 'update_with_title_id', :on => :collection
   end
+  resources :books, :only => [:index, :show, :edit, :update]
   resources :titles, :only => :index
   resources :matchingtitles, :only => [:index, :edit, :show, :update]
   
@@ -78,7 +82,7 @@ BookBuy::Application.routes.draw do
   post "invoiceitems/save" => 'invoiceitems#save', :as =>'item_save'
   
   post "enrichedtitles/scan_web" => 'enrichedtitles#scan_web'
-  
+    
   match  'discrepency' => 'invoices#discrepency', :as => 'discrepency'
   
   match 'removeitems' => 'invoiceitems#destroy', :as => 'remove_items'
