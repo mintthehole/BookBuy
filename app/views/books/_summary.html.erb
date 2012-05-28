@@ -1,0 +1,71 @@
+<div class='span-10'>
+  <table class='no-zebra'>
+    <tr>
+      <th></th>
+      <th></th>
+    </tr>
+    <tr>
+      <th>Book Tag</th>
+      <td><%= @book.book_tag_number %></td>
+    </tr>
+    <tr>
+      <th>Book Number</th>
+      <td><%= @book.booknumber %></td>
+    </tr>
+    <tr>
+      <th>Purchased On</th>
+      <td><%= @book.insertdate.strftime('%d-%b-%Y') unless @book.insertdate.nil? %></td>
+    </tr>
+    <tr>
+      <th>Purchase Price</th>
+      <td><%= @book.title.inr_price %></td>
+    </tr>
+    <tr>
+      <th>Times Rented</th>
+      <td><%= @book.times_rented  %></td>
+    </tr>
+    <tr>
+      <th>Book Condition</th>
+      <td><%= @book.book_condition_rating  %></td>
+    </tr>
+    <tr>
+      <th>Home Branch</th>
+      <td><%= @book.try(:originallocation).try(:name) %></td>
+    </tr>
+    <tr>
+      <th>Status</th>
+      <td><%= @book.status %></td>
+    </tr>
+  </table>
+</div>
+<div class='span-10 last'>
+  <% unless @book.title.in_core_list? -%>
+    <span style='color:red'>This title is not present in the core list.</span>
+  <% end -%>
+  <table>
+    <tr>
+      <th>Title Id</th>
+      <td><%= @book.titleid %></td>
+    </tr>
+    <tr>
+      <th>Title</th>
+      <td><%= @book.title.title %></td>
+    </tr>
+    <tr>
+      <th>Author</th>
+      <td><%= @book.title.try(:author).try(:name) %></td>
+    </tr>
+    <tr>
+      <th>Language</th>
+      <td><%= @book.title.language %></td>
+    </tr>    
+    <tr>
+      <th>ISBN</th>
+      <td><%= @book.title.isbn_13 %></td>
+    </tr>
+    <tr>
+      <th>In Core List</th>
+      <td><%= @book.title.in_core_list? %></td>
+    </tr>    
+  </table>
+</div>

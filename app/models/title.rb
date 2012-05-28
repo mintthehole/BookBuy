@@ -116,7 +116,17 @@ class Title < ActiveRecord::Base
   
   def book?
     titletype == 'B'
-  end  
+  end 
+  
+  def inr_price
+    return enrichedtitles.first.inr_price unless enrichedtitles.empty?
+    return noisbntitles.first.inr_price unless noisbntitles.empty?
+    return nil
+  end 
+  
+  def in_core_list?
+    !(enrichedtitles.empty? and noisbntitles.empty?)
+  end
   
 #  scope :with_similarity, lambda { |title, similarity, score|
 #    return unless similarity == 'J'

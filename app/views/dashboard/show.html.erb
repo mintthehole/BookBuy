@@ -2,7 +2,7 @@
 	$('#current_branch').html('<%= user_session['current_branch'].name %>');
 <% end -%>
 
-<div class='span-5' >
+<div class='span-4' >
   <h4>Core List</h4>
   <div><%= link_to "Title With ISBN", enrichedtitles_path %></div>
   <div><%= link_to "Title Without ISBN", noisbntitles_path %></div>  
@@ -11,11 +11,11 @@
   <br/>
   <div><%= link_to "ISBN 10/13 Digit Conversion", new_isbn_path %></div>
 </div>
-<div class='span-5'>
+<div class='span-4'>
   <h4>SAP</h4>  
   <div><%= link_to "SAP Dispatch / Outbound Deliveries", outbound_deliveries_path %></div>
 </div>
-<div class='span-5'>
+<div class='span-4'>
   <h4>Procurement</h4>
   <div><%= link_to "Lists", lists_path %></div>
   <div><%= link_to "Invoices", invoices_path %></div>
@@ -25,11 +25,15 @@
   <br/>
   <div><%= link_to "IBT Procurements", ibtrs_path %></div>  
 </div>
-<div class='span-5'>
+<div class='span-4'>
   <h4>Master Data</h4>
   <div><%= link_to "Currencies", currencies_path %></div>
   <div><%= link_to "Currency Rates", currencyrates_path %></div>
   <div><%= link_to "Supplier Discounts", supplierdiscounts_path %></div>
   <div><%= link_to "Imprints", imprints_path %></div>
   <div><%= link_to "Suppliers", suppliers_path %></div>
+</div>
+<div class='span-4'>
+  <h4>Book Inventory</h4>
+  <div><%= link_to "Book With ISBN", books_path %></div>
 </div>

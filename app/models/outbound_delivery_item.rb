@@ -61,7 +61,8 @@ class OutboundDeliveryItem < ActiveRecord::Base
       :userid => 'SAP',
       :times_rented => 0,
       :book_number_str => self.book_no[1..-1].to_i,
-      :book_tag_number => self.book_no
+      :book_tag_number => self.book_no,
+      :book_condition_rating => 5
     }
     book = Book.create!(attributes)
     book.copy_book_to_other_schemas

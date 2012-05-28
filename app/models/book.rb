@@ -4,9 +4,21 @@ class Book < ActiveRecord::Base
   set_primary_key :bookid
   set_sequence_name :seq_books
   
+  set_integer_columns :times_rented
+  
   belongs_to :title, :foreign_key => :titleid
   belongs_to :originallocation, :foreign_key => :origlocation, :class_name => 'Branch'
-  belongs_to :currentlocation, :foreign_key => :location, :class_name => 'Branch'
+  belongs_to :currentlocation, :foreign_key => :location, :class_name => 'Branch'  
+  
+  validate :terms_of_update_must_be_accepted, :on => :update
+  validate :isbn_or_title_id_must_be_in_core_list, :on => :update
+  
+  after_update :update_other_schemas
+  
+  attr_accessor :isbn_or_title_id, :terms_of_update
+  attr_accessible :isbn_or_title_id, :terms_of_update, :isbn, :titleid, :booknumber, :mrp_cost, :jb_cost, :date_of_purchase,
+  :insertdate, :status, :location, :origlocation, :userid, :times_rented, :book_number_str, :book_tag_number,
+  :book_condition_rating
 
   searchable do
     text :titleid, :stored => true
@@ -20,7 +32,7 @@ class Book < ActiveRecord::Base
     boolean :available, :using => :available?, :stored => true
     integer :city_id, :stored => true
   end
-  
+
   def title_type
     "B"
   end
@@ -87,7 +99,7 @@ class Book < ActiveRecord::Base
   def copy_book_to_other_schemas
     copy_book_to_other_schema(BookMumbai.new)
     copy_book_to_other_schema(BookHyd.new)    
-  end
+  end  
   
   private
   def copy_book_to_other_schema(b)
@@ -95,6 +107,27 @@ class Book < ActiveRecord::Base
       b[at[0]] = at[1]
     end
     b.id = self.id
+    b.save!
+  end
+  
+  def isbn_or_title_id_must_be_in_core_list
+    errors.add(:titleid, ' is not present in Core List, create it first') unless title.in_core_list?
+  end
+  
+  def terms_of_update_must_be_accepted
+    t = Title.find(titleid)
+    if t.try(:in_core_list?)
+      errors.add(:terms_of_update, ' need to be accepted') unless terms_of_update == '1'
+    end
+  end  
+  
+  def update_other_schemas
+    update_other_schema(BookMumbai.find(id))
+    update_other_schema(BookHyd.find(id))
+  end
+  def update_other_schema(b)
+    b.isbn = self.isbn
+    b.titleid = self.titleid
     b.save!
   end
 end

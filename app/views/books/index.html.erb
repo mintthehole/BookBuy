@@ -1,0 +1,13 @@
+<div class="span-24 last">
+	<%= form_tag books_path, :id => 'searchForm', :method => 'get' do -%>
+			<%= field_set_tag 'Book Number' do %>		
+  			<span>Enter the Book Number.
+  			</span>
+  			<br/>
+  			<%= label_tag 'Book Number'%>
+  			<%= text_field_tag :queryBookTagNo, params[:queryBookTagNo] %>
+  			<br/>
+  			<%= submit_tag "Submit", :name => nil %>
+			<% end -%>
+	<% end -%>
+</div>
