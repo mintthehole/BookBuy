@@ -9,9 +9,10 @@
   </table>
   <hr/>
   <% if @procurementitem.nil? %>
-    <div style='color:red'>This book does not have any valid procurement</div>
+    <h4 style='color:red'>This book does not have any valid procurement</h4>
   <% else -%>
     <% unless @matched_listitem.nil? %>
+      <h4>Found a matching IBT</h4>
       <table class='no-zebra'>
         <tr>
           <th>ISBN</th>
@@ -32,18 +33,19 @@
       </table>
     <% else %>
       <% if @open_listitems.empty?  %>
-        <div style='color:red'>This book does not have any valid IBT procurement</div>
+        <h4 style='color:red'>This book does not have any valid IBT procurement</h4>
       <% else %>
+        <h4 style='color:red'>IBT's found, but they may not be in an appropriate state.</h4>
         <table class='no-zebra'>
+          <tr>
+            <th>ISBN</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Branch</th>
+            <th>Member</th>
+            <th>IBT</th>
+          </tr>
           <% @open_listitems.each do |item| -%>
-            <tr>
-              <th>ISBN</th>
-              <th>Title</th>
-              <th>Author</th>
-              <th>Branch</th>
-              <th>Member</th>
-              <th>IBT</th>
-            </tr>
             <tr>
               <td><%= item.isbn %></td>
               <td><%= item.title %></td>
