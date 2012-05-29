@@ -1,10 +1,24 @@
 class BookreceiptsController < ApplicationController
   def index
-    @bookreceipts = Bookreceipt.paginate(:per_page => 10, :page => params[:page])
+    unless params[:queryBookTagNo].blank?
+      @bookreceipt = Bookreceipt.find_by_book_no(params[:queryBookTagNo])
+      
+      unless @bookreceipt.nil?          
+        redirect_to @bookreceipt
+      else
+        render :not_found
+      end
+    end    
   end
 
   def show
     @bookreceipt = Bookreceipt.find(params[:id])
+    @enrichedtitle = Enrichedtitle.find_by_isbn(@bookreceipt.isbn) 
+    @procurementitem = Procurementitem.find_by_po_number_and_isbn(@bookreceipt.po_no, @bookreceipt.isbn)
+    unless @procurementitem.nil?
+      @matched_listitem = Listitem.find_by_procurementitem_id_and_book_no(@procurementitem.id, @bookreceipt.book_no)
+      @open_listitems = Listitem.find_all_by_procurementitem_id_and_book_no(@procurementitem.id, nil)
+    end
   end
   
   def fetch

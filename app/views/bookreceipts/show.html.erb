@@ -1,2 +1,61 @@
-<h2>Bookreceipts#show</h2>
-<p>Find me in app/views/bookreceipts/show.html.erb</p>
+<div class='span-24'>
+  <table class='no-zebra'>
+    <tr><th style='width:15%'>Book No:</th><td><%= @bookreceipt.book_no %></td></tr>
+    <tr><th>PO No</th><td><%= @bookreceipt.po_no %></td></tr>
+    <tr><th>Invoice No</th><td><%= @bookreceipt.invoice_no %></td></tr>
+    <tr><th>Cataloged On</th><td><%= @bookreceipt.created_at %></td></tr>
+    <tr><th>ISBN</th><td><%= link_to @bookreceipt.isbn, enrichedtitle_path(@enrichedtitle) %></td></tr>
+    <tr><th>Title</th><td><%= @enrichedtitle.try(:title) %></td></tr>
+  </table>
+  <hr/>
+  <% if @procurementitem.nil? %>
+    <div style='color:red'>This book does not have any valid procurement</div>
+  <% else -%>
+    <% unless @matched_listitem.nil? %>
+      <table class='no-zebra'>
+        <tr>
+          <th>ISBN</th>
+          <th>Title</th>
+          <th>Author</th>
+          <th>Branch</th>
+          <th>Member</th>
+          <th>IBT</th>
+        </tr>
+        <tr>
+          <td><%= @matched_listitem.isbn %></td>
+          <td><%= @matched_listitem.title %></td>
+          <td><%= @matched_listitem.author %></td>
+          <td><%= @matched_listitem.branch_id %></td>
+          <td><%= @matched_listitem.card_id %></td>
+          <td><%= ops_ibtr_url(@matched_listitem.ibtr_id, :id) unless @matched_listitem.ibtr_id.nil? %></td>
+        </tr>
+      </table>
+    <% else %>
+      <% if @open_listitems.empty?  %>
+        <div style='color:red'>This book does not have any valid IBT procurement</div>
+      <% else %>
+        <table class='no-zebra'>
+          <% @open_listitems.each do |item| -%>
+            <tr>
+              <th>ISBN</th>
+              <th>Title</th>
+              <th>Author</th>
+              <th>Branch</th>
+              <th>Member</th>
+              <th>IBT</th>
+            </tr>
+            <tr>
+              <td><%= item.isbn %></td>
+              <td><%= item.title %></td>
+              <td><%= item.author %></td>
+              <td><%= item.branch_id %></td>
+              <td><%= item.card_id %></td>
+              <td><%= ops_ibtr_url(item.ibtr_id, :id) unless item.ibtr_id.nil? %></td>
+            </tr>
+          <% end -%>
+        </table>
+      <% end -%>
+    <% end -%>
+  <% end %>
+  
+</div>
