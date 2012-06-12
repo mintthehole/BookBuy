@@ -1,0 +1,67 @@
+<div class='span-24'>  
+
+  <div class='span-12'>
+    <%= form_tag upload_transfer_orders_path, :multipart => true do |f| -%>
+      <%= field_set_tag 'Upload SAP Transfer Orders' do -%>
+        <%= file_field_tag :file %>
+        <%= submit_tag "Upload", :name => nil %>
+      <% end -%>
+    <% end -%>
+  </div>
+    
+  <div class="span-12 last">
+  	<%= form_tag transfer_orders_path(:format => :csv), :id => 'exportForm', :method => 'get' do -%>
+  			<%= field_set_tag 'Export SAP Transfer Orders' do %>
+  			  <%= label_tag 'TO Date :' %><%= text_field_tag :to_date  %>
+    			<%= submit_tag "Submit", :name => nil %>
+  			<% end -%>
+  	<% end -%>  
+  </div>  
+    
+  <hr/>
+
+  <div class='span-24 last'>
+  	<%= form_tag transfer_orders_path, :id => 'exportForm', :method => 'get' do -%>
+  			<%= field_set_tag 'Search SAP Transfer Orders' do %>
+  			  <%= label_tag 'TO Date :' %><%= text_field_tag :to_date, params[:to_date]  %><br/>
+  			  <%= label_tag 'Storage Bin :' %><%= text_field_tag :storage_bin, params[:storage_bin]  %><br/>
+  			  <%= label_tag 'Material Code :' %><%= text_field_tag :material_code, params[:material_code]  %>
+    			<%= submit_tag "Submit", :name => nil %>
+    			
+    			<br/>
+    			<br/>
+    			
+        	<% unless @transfer_orders.nil? -%>
+        	  <table class='no-zebra'>
+        	    <tr>
+        	      <th>ID</th>
+        	      <th>Date</th>
+        	      <th>Number</th>
+        	      <th>Item</th>
+        	      <th>Mov. Type</th>
+        	      <th>Material</th>
+        	      <th>Storage Bin</th>
+        	      <th>Quantity</th>
+        	      <th>Picked</th>
+        	    </tr>
+          	  <% @transfer_orders.each do |t| -%>
+          	    <tr>
+                  <td> <%= link_to t.id, edit_transfer_order_path(t) %> </td>
+                  <td> <%= t.to_date %> </td>
+                  <td> <%= t.to_number %> </td>
+                  <td> <%= t.to_item %> </td>
+                  <td> <%= t.movement_type %> </td>
+                  <td> <%= t.material_code %> </td>
+                  <td> <%= t.storage_bin %> </td>
+                  <td> <%= t.required_quantity %> </td>
+                  <td> <%= t.picked_quantity %> </td>
+          	    </tr>
+          	  <% end -%>
+          	</table>
+        	<% end -%>
+    			
+  			<% end -%>
+  	<% end -%>    	
+  </div>
+
+</div>

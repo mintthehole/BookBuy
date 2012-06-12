@@ -1,0 +1,18 @@
+<div class='span-24 last'>
+  <table class='no-zebra'>
+    <tr><td style='width:20%'><%= label_tag :to_date %></td><td><%= @transfer_order.to_date %> </td></tr>
+    <tr><td><%= label_tag :to_number %></td><td><%= @transfer_order.to_number %> </td></tr>
+    <tr><td><%= label_tag :to_item %></td><td><%= @transfer_order.to_item %> </td></tr>
+    <tr><td><%= label_tag :movement_type %></td><td><%= @transfer_order.movement_type %> </td></tr>
+    <tr><td><%= label_tag :material_code %></td><td><%= @transfer_order.material_code %> </td></tr>
+    <tr><td><%= label_tag :storage_bin %></td><td><%= @transfer_order.storage_bin %> </td></tr>
+    <tr><td><%= label_tag :required_quantity %></td><td><%= @transfer_order.required_quantity %> </td></tr>
+    <tr><td><%= label_tag :picked_quantity %></td><td><%= @transfer_order.picked_quantity %> </td></tr>
+  </table>
+  
+  <div class="span-24 last">
+    <%= link_to 'Edit', edit_transfer_order_path(@transfer_order) %>
+    <%= link_to 'Index', transfer_orders_path %>
+  </div>
+  
+</div>

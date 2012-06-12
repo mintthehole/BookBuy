@@ -1,0 +1,47 @@
+<% content_for :javascript_includes do %>
+  <%= javascript_include_tag "transfer_orders.js" %>
+<% end %>
+
+<div class='span-24 last'>
+  <%= button_to_function 'Start Process', 'start_transfer_order_creation();' %>
+  <%= button_to_function 'Stop Process', 'stop_transfer_order_creation();' %>
+  <%= check_box_tag 'process_status', 1, false, :disabled => true %>
+  <table>
+      <tr>
+        <% TransferOrder::FILE_COLUMNS.keys.each do |k| -%>
+          <th><%= k %></th>
+        <% end -%>
+      </tr>
+    <% @rows.each_with_index do |row,i| -%>
+      <tr>
+          <td><%= row[TransferOrder::FILE_COLUMNS[:warehouse]] %></td>
+          <td><%= row[TransferOrder::FILE_COLUMNS[:to_date]] %></td>
+          <td><%= row[TransferOrder::FILE_COLUMNS[:to_number]] %></td>
+          <td><%= row[TransferOrder::FILE_COLUMNS[:to_item]] %></td>
+          <td><%= row[TransferOrder::FILE_COLUMNS[:movement_type]] %></td>
+          <td><%= row[TransferOrder::FILE_COLUMNS[:material_code]] %></td>
+          <td><%= row[TransferOrder::FILE_COLUMNS[:storage_location]] %></td>
+          <td><%= row[TransferOrder::FILE_COLUMNS[:material_type]] %></td>
+          <td><%= row[TransferOrder::FILE_COLUMNS[:storage_bin]] %></td>
+          <td><%= row[TransferOrder::FILE_COLUMNS[:required_quantity]] %></td>
+          <td>
+            <%= form_tag transfer_orders_path, :id => "tof_#{i}", :class => 'tof', :method => :post, :remote => true do  -%>
+              <%= hidden_field_tag 'id', i %>
+              <%= hidden_field_tag 'transfer_order[warehouse]', row[TransferOrder::FILE_COLUMNS[:warehouse]] %>
+              <%= hidden_field_tag 'transfer_order[to_date]', row[TransferOrder::FILE_COLUMNS[:to_date]] %>
+              <%= hidden_field_tag 'transfer_order[to_number]', row[TransferOrder::FILE_COLUMNS[:to_number]] %>
+              <%= hidden_field_tag 'transfer_order[to_item]', row[TransferOrder::FILE_COLUMNS[:to_item]] %>
+              <%= hidden_field_tag 'transfer_order[movement_type]', row[TransferOrder::FILE_COLUMNS[:movement_type]] %>
+              <%= hidden_field_tag 'transfer_order[material_code]', row[TransferOrder::FILE_COLUMNS[:material_code]] %>
+              <%= hidden_field_tag 'transfer_order[storage_location]', row[TransferOrder::FILE_COLUMNS[:storage_location]] %>
+              <%= hidden_field_tag 'transfer_order[material_type]', row[TransferOrder::FILE_COLUMNS[:material_type]] %>
+              <%= hidden_field_tag 'transfer_order[storage_bin]', row[TransferOrder::FILE_COLUMNS[:storage_bin]] %>
+              <%= hidden_field_tag 'transfer_order[required_quantity]', row[TransferOrder::FILE_COLUMNS[:required_quantity]] %>
+              <%= tag(:div, :class => 'errors')%>
+              <%= submit_tag 'Submit', :name => nil, :hidden => true %>
+            <% end -%>
+          </td>
+      </tr>
+    <% end -%>
+  <table>
+</div>

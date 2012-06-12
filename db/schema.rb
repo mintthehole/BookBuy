@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120511183155) do
+ActiveRecord::Schema.define(:version => 20120612063707) do
 
   create_table "app_116_16_gt", :temporary => true, :id => false, :force => true do |t|
     t.integer "batch_no",                  :precision => 38, :scale => 0
@@ -401,6 +401,10 @@ ActiveRecord::Schema.define(:version => 20120511183155) do
     t.string "release_date"
     t.string "weight"
     t.string "pubyear"
+  end
+
+  create_table "isbnsnotinet", :id => false, :force => true do |t|
+    t.string "isbn", :limit => 13
   end
 
   create_table "languages", :force => true do |t|
@@ -798,6 +802,25 @@ ActiveRecord::Schema.define(:version => 20120511183155) do
     t.integer   "invoice_id",                         :precision => 38, :scale => 0
     t.integer   "box_id",                             :precision => 38, :scale => 0
   end
+
+  create_table "transfer_orders", :force => true do |t|
+    t.string    "warehouse",                                                                    :null => false
+    t.string    "to_date",                                                                      :null => false
+    t.integer   "to_number",                      :precision => 38, :scale => 0,                :null => false
+    t.integer   "to_item",                        :precision => 38, :scale => 0,                :null => false
+    t.integer   "movement_type",                  :precision => 38, :scale => 0,                :null => false
+    t.integer   "material_type",                  :precision => 38, :scale => 0,                :null => false
+    t.string    "material_code",                                                                :null => false
+    t.string    "storage_location",                                                             :null => false
+    t.string    "storage_bin",                                                                  :null => false
+    t.integer   "required_quantity",              :precision => 38, :scale => 0,                :null => false
+    t.integer   "picked_quantity",                :precision => 38, :scale => 0, :default => 0, :null => false
+    t.timestamp "created_at",        :limit => 6,                                               :null => false
+    t.timestamp "updated_at",        :limit => 6,                                               :null => false
+  end
+
+  add_index "transfer_orders", ["to_date", "storage_bin", "material_code"], :name => "i7d7b8a05a7ee00b5616b129ae88bf"
+  add_index "transfer_orders", ["to_number", "to_item"], :name => "i_tra_ord_to_num_to_ite", :unique => true
 
   create_table "users", :force => true do |t|
     t.string   "username"

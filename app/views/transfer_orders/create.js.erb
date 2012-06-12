@@ -1,0 +1,19 @@
+var el = $('#tof_'+<%= "#{@form_id}" %>);
+
+<% if @errors.nil? %>
+
+  el.find('.errors').html("<span>Success</span>");
+
+<% else %>
+
+  // Create a list of errors
+  var errors = $('<ul />');
+
+  <% @errors.full_messages.each do |error| %>
+    errors.append('<li><%= escape_javascript( error ) %></li>');
+  <% end %>
+
+  // Display errors on form
+  el.find('.errors').html(errors);
+  
+<% end %>

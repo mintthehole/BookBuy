@@ -23,6 +23,11 @@ BookBuy::Application.routes.draw do
     post 'upload', :on => :collection
   end
   
+  resources :transfer_orders, :only => [:index, :create, :update, :show]
+  resources :transfer_orders do
+    post 'upload', :on => :collection
+  end
+  
   resources :isbns, :only => [:new, :create, :show]
 
   resources :distributions
