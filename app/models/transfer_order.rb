@@ -34,15 +34,14 @@ class TransferOrder < ActiveRecord::Base
   :storage_bin, :required_quantity, :picked_quantity
   
   def self.search(params)
-    #transfer_orders = order('to_date desc').limit(10)
     transfer_orders = TransferOrder.where(:to_date => params[:to_date])
     transfer_orders = transfer_orders.where(:material_code => params[:material_code]) if params[:material_code].present?
     transfer_orders = transfer_orders.where(:storage_bin => params[:storage_bin]) if params[:storage_bin].present?
-    transfer_orders.limit(10)
+    transfer_orders
   end
   
   def self.create_file(transfer_orders)
-    CSV.generate(:col_sep => "\t") do |line|
+    CSV.generate do |line|
       line << %w[Warehouse TODate TONumber TOItem MovType MatNumber StorageLoc MaterialType StorageBin RequiredQuantity PickedQuantity]
       
       unless transfer_orders.nil?

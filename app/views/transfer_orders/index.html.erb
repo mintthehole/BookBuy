@@ -34,6 +34,21 @@
         	<% unless @transfer_orders.nil? -%>
         	  <table class='no-zebra'>
         	    <tr>
+          	    <th>Storage Bin</th>
+          	    <th>Required Quantity</th>
+          	    <th>Picked Quantity</th>
+          	  </tr>
+        	    <% @transfer_orders.group_by(&:storage_bin).each do |storage_bin, transfer_orders |%>
+        	      <tr>
+        	        <td><%= storage_bin %></td>
+        	        <td><%= transfer_orders.inject(0) { |sum,t| sum + t.required_quantity } %></td>
+        	        <td><%= transfer_orders.inject(0) { |sum,t| sum + t.picked_quantity } %></td>
+        	      </tr>
+        	    <% end -%>
+        	  </table>
+        	  <hr/>
+        	  <table class='no-zebra'>
+        	    <tr>
         	      <th>ID</th>
         	      <th>Date</th>
         	      <th>Number</th>
